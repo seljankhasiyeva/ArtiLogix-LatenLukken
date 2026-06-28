@@ -37,20 +37,20 @@ Predict Orders → Derive Load → Select Vehicle → Calculate Cost
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                    Frontend (Vanilla JS)              │
-│         Marketplace Portal │ Logistics Dashboard      │
-└────────────────┬────────────────────┬────────────────┘
+│                    Frontend (Vanilla JS)            │
+│         Marketplace Portal │ Logistics Dashboard    │
+└────────────────┬────────────────────┬───────────────┘
                  │                    │
 ┌────────────────▼────────────────────▼────────────────┐
-│              Python FastAPI  (port 8001)              │
-│   /predict/forecast  │  /predict/load  │  /chat       │
-│   /predict/dispatch  │  /predict/cost  │  /analytics  │
+│              Python FastAPI  (port 8001)             │
+│   /predict/forecast  │  /predict/load  │  /chat      │
+│   /predict/dispatch  │  /predict/cost  │  /analytics │
 └────────────┬─────────────────────────┬───────────────┘
              │                         │
    ┌──────────▼──────────┐   ┌─────────▼────────┐
-   │   ML Models         │   │   Claude Sonnet   │
-   │  LightGBM (x10)     │   │   Tool Calling    │
-   │  Prophet (baseline) │   │   SSE Streaming   │
+   │   ML Models         │   │   Claude Sonnet  │
+   │  LightGBM (x10)     │   │   Tool Calling   │
+   │  Prophet (baseline) │   │   SSE Streaming  │
    │  Ridge Regression   │   └──────────────────┘
    └──────────┬──────────┘
               │
