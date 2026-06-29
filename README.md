@@ -232,7 +232,6 @@ artilogix/
 
 - All data is **synthetically generated** — real-world performance may differ
 - Pricing rates are market estimates, not official tariff documents
-- Demo credentials are hard-coded — not production-ready
 - Single DuckDB file — no replication or HA
 
 ---
