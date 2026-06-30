@@ -1,0 +1,11 @@
+# DuckDB — generated locally, not committed
+data/*.duckdb
+data/*.duckdb.wal
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Env secrets
+.env
