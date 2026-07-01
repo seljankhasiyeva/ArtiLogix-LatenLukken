@@ -33,6 +33,38 @@ Predict Orders → Derive Load → Select Vehicle → Calculate Cost
 
 ---
 
+## 👥 Team
+
+| Role | Responsibilities |
+|---|---|
+| Seljan Khasiyeva - AI Engineer | Data Pipeline · Backend API · Frontend/UI · Deployment |
+| Zarifa Musayeva - ML Engineer | EDA & Research · Logic Layer · LLM Integration |
+| Firuddin Rzayev - Data Scientist | ML Step 1 (Order Forecast) · Evaluation · Presentation |
+| Jabrail Atakishiyev - Data Scientist | ML Step 2 (Load Derivation) · Evaluation · Presentation |
+
+---
+
+## 📅 Progress Log
+
+| Date | Completed |
+|---|---|
+| Mon, Jun 29 | Loaded 15 parquet files into DuckDB · weekly_orders_by_region view created · FastAPI scaffold with 4 routers · JWT authentication · LightGBM model initialization · avg_weight regression started · Time-series per region analysis |
+| Tue, Jun 30 | order_shipment_join view (25,877 rows) · 4 analytics views (regional_demand_trend, delay_rate_by_route, vehicle_usage_distribution, top_routes_by_cost) · Data quality report · .gitignore and .env.example setup · DuckDB query helpers · Seasonality analysis and ADF stationarity tests · Prophet baseline model · Ridge regression model completed |
+| Wed, Jul 1 | |
+| Thu, Jul 2 | |
+| Fri, Jul 3 | |
+| Mon, Jul 7 | |
+| Tue, Jul 8 | |
+| Wed, Jul 9 | |
+| Thu, Jul 10 | |
+| Fri, Jul 11 | |
+| Mon, Jul 14 | |
+| Tue, Jul 15 | |
+| Wed, Jul 16 | |
+| Thu, Jul 17 | |
+
+---
+
 ## 🏗️ Architecture
 
 ```
@@ -69,62 +101,95 @@ Predict Orders → Derive Load → Select Vehicle → Calculate Cost
 
 | Dataset | Rows | Role |
 |---|---|---|
-| orders.csv | 50,000 | Step 1 ML training — weekly order counts per region |
-| tir_shipments.csv | 8,000 | Step 2 ML training — actual load tonnage |
+| orders.csv | 110,000 | Step 1 ML training — weekly order counts per region |
+| tir_shipments.csv | 16,000 | Step 2 ML training — actual load tonnage |
 | vehicles.csv | 60 | Step 4 price table — fixed fee + variable cost/km |
-| routes_history.csv | 2,000 | Road distances for cost calculation |
+| routes_history.csv | 3,000 | Road distances for cost calculation |
 | spot_pricing.csv | 2,000 | Market demand index (feature only, not target) |
 | deliveries.csv | 50,000 | Last-mile analytics |
 | + 9 supporting CSVs | Various | Warehouses, couriers, weather, holidays, GPS, traffic |
 
-**Coverage:** 10 Azerbaijan regions · 2020–2026 · 50,000+ orders
+**Coverage:** 10 Azerbaijan regions · 2020–2026 · 110,000+ orders
 
 ---
 
 ## 🤖 ML Pipeline
 
-### Step 1 — Order Volume Forecast (Core ML)
-- **Model:** LightGBM (primary) + Prophet (baseline)
-- **Target:** `weekly_order_count` per region
-- **Features:** `lag_1w`, `lag_2w`, `lag_4w`, `rolling_mean_4w`, `month`, `week_of_year`, `is_holiday`, `days_to_holiday`
-- **Split:** 2020–2024 train / 2025–2026 test
-- **Target metric:** MAPE ≤ 20% per region
+ArtiLogix answers one question: **"How many vehicles do I need next week, and what will it cost?"**
 
-### Step 2 — Load Derivation (Secondary ML)
-- **Model:** Ridge Regression
-- **Formula:** `desi_estimate = forecast_orders × avg_weight_model.predict(region, month)`
-- **Target metric:** R² ≥ 0.70 (chained)
+It does this in four steps — only the first two use machine learning:
 
-### Step 3 — Vehicle Selection (Rule-Based)
+---
 
-| Desi Range | Vehicle |
+### Step 1 — How many orders are coming? *(Machine Learning)*
+
+We look at the past 4 weeks of order history for each region and predict how many orders will arrive next week. The model learns patterns like "orders spike before Novruz" or "Absheron always has 3× more volume than Sheki."
+
+- Covers all 10 Azerbaijan regions separately
+- Trained on 6 years of data (2020–2024), tested on 2025–2026
+- Target accuracy: within 20% of actual order count
+
+---
+
+### Step 2 — How much cargo is that? *(Machine Learning)*
+
+Order count alone does not tell us how heavy the shipment will be. A region that ships electronics weighs more than one that ships textiles. We convert order count into estimated tonnage (desi) using regional averages.
+
+- Formula: `estimated load = predicted orders × average weight per order`
+- Average weight varies by region and season
+
+---
+
+### Step 3 — Which vehicle? *(Simple Rules)*
+
+Once we know the load, we pick the right vehicle from a fixed table. No machine learning needed here — the rules are straightforward:
+
+| Load | Vehicle |
 |---|---|
-| < 500 | Ford Transit 2t |
-| 500 – 1,500 | Gazelle 3t / Isuzu NPR 5t |
-| 1,500 – 4,000 | Mercedes Atego 10t |
-| > 4,000 | TIR 20t |
-| Any + cold_chain | Refrigerated variant |
+| Under 500 desi | Ford Transit (small van) |
+| 500 – 1,500 desi | Gazelle or Isuzu (medium truck) |
+| 1,500 – 4,000 desi | Mercedes Atego (large truck) |
+| Over 4,000 desi | TIR (full semi-trailer) |
+| Temperature-sensitive cargo | Refrigerated variant of above |
 
-### Step 4 — Cost Calculation (Deterministic)
+---
+
+### Step 4 — What does it cost? *(Fixed Formula)*
+
+Cost is calculated directly from a price table — no guessing, no model:
 
 ```
 total_cost_azn = (fixed_fee × days) + (distance_km × variable_cost_per_km) + toll_fees
 ```
 
+Every rate comes from a fixed price table maintained by the logistics team.
+The system tells you exactly which row of that table applies — that is the value machine learning provides.
+
 ---
 
 ## 🧠 LLM Interface
 
-ArtiLogix uses **Claude Sonnet** via the Anthropic API with tool calling to orchestrate the full 4-step chain:
+Instead of navigating dashboards and filling forms, you can simply ask ArtiLogix a question — in Azerbaijani or English — and it will run the full 4-step chain behind the scenes and give you a plain-language answer.
 
-| Tool | Trigger |
-|---|---|
-| `get_weekly_forecast(region, date_from)` | "How many orders expected in Ganja next week?" |
-| `get_dispatch_plan(region, date)` | "What vehicle should I send to Lankaran?" |
-| `get_scenario(region, delta_pct)` | "What if demand is 20% higher in Sheki?" |
-| `get_route_history(origin, dest)` | "Show me Baku→Ganja cost history" |
+**Examples of what you can ask:**
 
-Two role-based system prompts: **Marketplace** (order-level) and **Logistics** (dispatch planning).
+> *"How many orders are expected in Ganja next week?"*
+> *"What vehicle should I send to Lankaran on Friday?"*
+> *"What if demand in Sheki is 20% higher than forecast?"*
+> *"Show me the cost history for the Baku to Ganja route."*
+
+ArtiLogix understands what you are asking, calls the right calculations automatically, and responds with a complete dispatch recommendation — forecast, load estimate, vehicle choice, and cost — all in one message.
+
+---
+
+**Two modes depending on who is asking:**
+
+- **Marketplace view** — focused on individual orders: estimated cost, delivery time, vehicle type for your shipment.
+- **Logistics manager view** — focused on weekly planning: how many vehicles to prepare per region, total cost projections, route efficiency.
+
+---
+
+*Powered by Claude Sonnet (Anthropic) with tool calling — the AI never guesses numbers, it always runs the actual calculation before responding.*
 
 ---
 
@@ -151,8 +216,8 @@ Two role-based system prompts: **Marketplace** (order-level) and **Logistics** (
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/artilogix.git
-cd artilogix
+git clone https://github.com/seljankhasiyeva/ArtiLogix-LatenLukken.git
+cd ArtiLogix-LatenLukken
 cp .env.example .env
 # Add your ANTHROPIC_API_KEY to .env
 ```
@@ -215,16 +280,7 @@ artilogix/
 | LLM hallucination rate | < 5% |
 | API latency p50 | < 2.5 seconds |
 
----
 
-## 👥 Team
-
-| Role | Responsibilities |
-|---|---|
-| AI Engineer | Data Pipeline · Backend API · Frontend/UI · Deployment |
-| ML Engineer | EDA & Research · Logic Layer · LLM Integration |
-| Data Scientist 1 | ML Step 1 (Order Forecast) · Evaluation · Presentation |
-| Data Scientist 2 | ML Step 2 (Load Derivation) · Evaluation · Presentation |
 
 ---
 

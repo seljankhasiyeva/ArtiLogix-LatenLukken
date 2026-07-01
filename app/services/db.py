@@ -1,4 +1,5 @@
 import duckdb
+from typing import Any
 
 DB_PATH = "data/artilogix.duckdb"
 
@@ -13,6 +14,16 @@ def init_db():
 
 def get_db():
     return _con
+
+
+def query(sql: str, params: list = None) -> list[Any]:
+    result = _con.execute(sql, params or [])
+    return result.fetchall()
+
+
+def query_df(sql: str, params: list = None):
+    result = _con.execute(sql, params or [])
+    return result.df()
 
 
 def close_db():
