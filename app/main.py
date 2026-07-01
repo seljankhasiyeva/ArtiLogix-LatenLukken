@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from app.services.db import init_db, close_db
 from app.routers import forecast, dispatch, chat, analytics
+from app.routers import auth
 
 
 @asynccontextmanager
@@ -19,6 +20,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(forecast.router, prefix="/predict", tags=["Forecast"])
 app.include_router(dispatch.router, prefix="/predict", tags=["Dispatch"])
 app.include_router(chat.router, prefix="/chat", tags=["Chat"])
