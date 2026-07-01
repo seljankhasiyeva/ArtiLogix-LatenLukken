@@ -48,8 +48,8 @@ Predict Orders → Derive Load → Select Vehicle → Calculate Cost
 
 | Date | Completed |
 |---|---|
-| Mon, Jun 29 | D-01: Loaded 15 parquet files into DuckDB (110K orders, 16K shipments) · D-02: weekly_orders_by_region view (3,340 rows, 10 regions) · B-01: FastAPI scaffold, 4 routers, DuckDB service · B-03: JWT authentication, demo users, token endpoint |
-| Tue, Jun 30 | D-03: order_shipment_join view (25,877 rows, 0 NULLs) · D-04: 4 analytics views (regional_demand_trend, delay_rate_by_route, vehicle_usage_distribution, top_routes_by_cost) · D-05: Data quality report (Khankendi bug confirmed fixed, outlier flagged in actual_load_ton) · D-06: .gitignore, .env.example, branch structure · B-02: DuckDB query helpers (query, query_df) |
+| Mon, Jun 29 | Loaded 15 parquet files into DuckDB · weekly_orders_by_region view created · FastAPI scaffold with 4 routers · JWT authentication · LightGBM model initialization · avg_weight regression started · Time-series per region analysis |
+| Tue, Jun 30 | order_shipment_join view (25,877 rows) · 4 analytics views (regional_demand_trend, delay_rate_by_route, vehicle_usage_distribution, top_routes_by_cost) · Data quality report · .gitignore and .env.example setup · DuckDB query helpers · Seasonality analysis and ADF stationarity tests · Prophet baseline model · Ridge regression model completed |
 | Wed, Jul 1 | |
 | Thu, Jul 2 | |
 | Fri, Jul 3 | |
