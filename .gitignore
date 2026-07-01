@@ -1,11 +1,20 @@
-# DuckDB — generated locally, not committed
+# Python virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# DuckDB
 data/*.duckdb
 data/*.duckdb.wal
 
-# Python
-__pycache__/
-*.pyc
-venv/
-
-# Env secrets
+# Secrets
 .env
+
+# OS
+.DS_Store
+Thumbs.db
