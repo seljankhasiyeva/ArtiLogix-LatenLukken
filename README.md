@@ -50,8 +50,8 @@ Predict Orders → Derive Load → Select Vehicle → Calculate Cost
 |---|---|
 | Mon, Jun 29 | Loaded 15 parquet files into DuckDB · weekly_orders_by_region view created · FastAPI scaffold with 4 routers · JWT authentication · LightGBM model initialization · avg_weight regression started · Time-series per region analysis |
 | Tue, Jun 30 | order_shipment_join view (25,877 rows) · 4 analytics views (regional_demand_trend, delay_rate_by_route, vehicle_usage_distribution, top_routes_by_cost) · Data quality report · .gitignore and .env.example setup · DuckDB query helpers · Seasonality analysis and ADF stationarity tests · Prophet baseline model · Ridge regression model completed |
-| Wed, Jul 1 | |
-| Thu, Jul 2 | |
+| Wed, Jul 1 | DQ checks completed · Git integration · DuckDB integration · JWT authentication implemented · Small region decision logic · Train/test split completed · Chained ML pipeline setup |
+| Thu, Jul 2 | Tool schema designed · Prompt templates created · patterns.md implemented · Feature engineering completed · Vehicle selector implemented · LightGBM model training · Cost calculation module · Cost calculation tests |
 | Fri, Jul 3 | |
 | Mon, Jul 7 | |
 | Tue, Jul 8 | |
