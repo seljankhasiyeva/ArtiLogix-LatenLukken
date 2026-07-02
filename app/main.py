@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from app.services.db import init_db, close_db
+from app.services.model_loader import load_models
 from app.routers import forecast, dispatch, chat, analytics
 from app.routers import auth
 
@@ -9,6 +10,7 @@ from app.routers import auth
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
+    load_models()
     yield
     close_db()
 
