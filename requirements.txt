@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+duckdb
+pandas
+pyarrow
+python-jose[cryptography]
+passlib
+joblib
+scikit-learn
+anthropic
+python-multipart
