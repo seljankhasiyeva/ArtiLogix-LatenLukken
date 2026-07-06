@@ -1,74 +1,37 @@
 [
   {
-    "warehouse_id": "WH_ABSHERON_05",
-    "region": "Absheron",
+    "warehouse_id": "WH_KHACHMAZ_18",
+    "region": "Khachmaz",
     "model": "Ridge",
-    "current_fill_pct": 95.83,
+    "current_fill_pct": 92.81,
     "forecast": [
       {
         "day": 1,
-        "fill_pct": 95.85
+        "fill_pct": 92.68
       },
       {
         "day": 2,
-        "fill_pct": 95.87
+        "fill_pct": 92.56
       },
       {
         "day": 3,
-        "fill_pct": 95.89
+        "fill_pct": 92.43
       },
       {
         "day": 4,
-        "fill_pct": 95.92
+        "fill_pct": 92.3
       },
       {
         "day": 5,
-        "fill_pct": 95.94
+        "fill_pct": 92.18
       },
       {
         "day": 6,
-        "fill_pct": 95.96
+        "fill_pct": 92.05
       },
       {
         "day": 7,
-        "fill_pct": 95.98
-      }
-    ],
-    "risk_over_90_in_7d": true
-  },
-  {
-    "warehouse_id": "WH_LANKARAN_16",
-    "region": "Lankaran",
-    "model": "Ridge",
-    "current_fill_pct": 92.35,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 92.35
-      },
-      {
-        "day": 2,
-        "fill_pct": 92.35
-      },
-      {
-        "day": 3,
-        "fill_pct": 92.35
-      },
-      {
-        "day": 4,
-        "fill_pct": 92.35
-      },
-      {
-        "day": 5,
-        "fill_pct": 92.35
-      },
-      {
-        "day": 6,
-        "fill_pct": 92.35
-      },
-      {
-        "day": 7,
-        "fill_pct": 92.35
+        "fill_pct": 91.92
       }
     ],
     "risk_over_90_in_7d": true
@@ -77,886 +40,72 @@
     "warehouse_id": "WH_ABSHERON_01",
     "region": "Absheron",
     "model": "Ridge",
-    "current_fill_pct": 91.67,
+    "current_fill_pct": 89.3,
     "forecast": [
       {
         "day": 1,
-        "fill_pct": 91.66
+        "fill_pct": 89.29
       },
       {
         "day": 2,
-        "fill_pct": 91.65
+        "fill_pct": 89.27
       },
       {
         "day": 3,
-        "fill_pct": 91.63
+        "fill_pct": 89.26
       },
       {
         "day": 4,
-        "fill_pct": 91.62
+        "fill_pct": 89.25
       },
       {
         "day": 5,
-        "fill_pct": 91.61
+        "fill_pct": 89.24
       },
       {
         "day": 6,
-        "fill_pct": 91.6
+        "fill_pct": 89.22
       },
       {
         "day": 7,
-        "fill_pct": 91.58
-      }
-    ],
-    "risk_over_90_in_7d": true
-  },
-  {
-    "warehouse_id": "WH_SHEKI_20",
-    "region": "Sheki",
-    "model": "Ridge",
-    "current_fill_pct": 89.95,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 90.03
-      },
-      {
-        "day": 2,
-        "fill_pct": 90.1
-      },
-      {
-        "day": 3,
-        "fill_pct": 90.17
-      },
-      {
-        "day": 4,
-        "fill_pct": 90.24
-      },
-      {
-        "day": 5,
-        "fill_pct": 90.32
-      },
-      {
-        "day": 6,
-        "fill_pct": 90.39
-      },
-      {
-        "day": 7,
-        "fill_pct": 90.46
-      }
-    ],
-    "risk_over_90_in_7d": true
-  },
-  {
-    "warehouse_id": "WH_LANKARAN_17",
-    "region": "Lankaran",
-    "model": "Ridge",
-    "current_fill_pct": 88.68,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 88.71
-      },
-      {
-        "day": 2,
-        "fill_pct": 88.74
-      },
-      {
-        "day": 3,
-        "fill_pct": 88.76
-      },
-      {
-        "day": 4,
-        "fill_pct": 88.79
-      },
-      {
-        "day": 5,
-        "fill_pct": 88.82
-      },
-      {
-        "day": 6,
-        "fill_pct": 88.84
-      },
-      {
-        "day": 7,
-        "fill_pct": 88.87
+        "fill_pct": 89.21
       }
     ],
     "risk_over_90_in_7d": false
   },
   {
-    "warehouse_id": "WH_NAKHCHIVAN_28",
-    "region": "Nakhchivan",
-    "model": "Ridge",
-    "current_fill_pct": 86.76,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 86.69
-      },
-      {
-        "day": 2,
-        "fill_pct": 86.61
-      },
-      {
-        "day": 3,
-        "fill_pct": 86.53
-      },
-      {
-        "day": 4,
-        "fill_pct": 86.46
-      },
-      {
-        "day": 5,
-        "fill_pct": 86.38
-      },
-      {
-        "day": 6,
-        "fill_pct": 86.31
-      },
-      {
-        "day": 7,
-        "fill_pct": 86.23
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_YEVLAKH_25",
-    "region": "Yevlakh",
-    "model": "Ridge",
-    "current_fill_pct": 84.62,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 84.57
-      },
-      {
-        "day": 2,
-        "fill_pct": 84.51
-      },
-      {
-        "day": 3,
-        "fill_pct": 84.46
-      },
-      {
-        "day": 4,
-        "fill_pct": 84.41
-      },
-      {
-        "day": 5,
-        "fill_pct": 84.35
-      },
-      {
-        "day": 6,
-        "fill_pct": 84.3
-      },
-      {
-        "day": 7,
-        "fill_pct": 84.25
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_KHACHMAZ_23",
-    "region": "Khachmaz",
-    "model": "Ridge",
-    "current_fill_pct": 78.74,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 78.75
-      },
-      {
-        "day": 2,
-        "fill_pct": 78.77
-      },
-      {
-        "day": 3,
-        "fill_pct": 78.79
-      },
-      {
-        "day": 4,
-        "fill_pct": 78.8
-      },
-      {
-        "day": 5,
-        "fill_pct": 78.82
-      },
-      {
-        "day": 6,
-        "fill_pct": 78.83
-      },
-      {
-        "day": 7,
-        "fill_pct": 78.85
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_ABSHERON_08",
+    "warehouse_id": "WH_ABSHERON_09",
     "region": "Absheron",
     "model": "Ridge",
-    "current_fill_pct": 77.64,
+    "current_fill_pct": 87.74,
     "forecast": [
       {
         "day": 1,
-        "fill_pct": 77.62
+        "fill_pct": 87.73
       },
       {
         "day": 2,
-        "fill_pct": 77.6
+        "fill_pct": 87.73
       },
       {
         "day": 3,
-        "fill_pct": 77.57
+        "fill_pct": 87.73
       },
       {
         "day": 4,
-        "fill_pct": 77.55
+        "fill_pct": 87.73
       },
       {
         "day": 5,
-        "fill_pct": 77.53
+        "fill_pct": 87.72
       },
       {
         "day": 6,
-        "fill_pct": 77.51
+        "fill_pct": 87.72
       },
       {
         "day": 7,
-        "fill_pct": 77.49
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_KHACHMAZ_24",
-    "region": "Khachmaz",
-    "model": "Ridge",
-    "current_fill_pct": 76.1,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 76.17
-      },
-      {
-        "day": 2,
-        "fill_pct": 76.24
-      },
-      {
-        "day": 3,
-        "fill_pct": 76.31
-      },
-      {
-        "day": 4,
-        "fill_pct": 76.37
-      },
-      {
-        "day": 5,
-        "fill_pct": 76.44
-      },
-      {
-        "day": 6,
-        "fill_pct": 76.51
-      },
-      {
-        "day": 7,
-        "fill_pct": 76.58
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_ABSHERON_04",
-    "region": "Absheron",
-    "model": "Ridge",
-    "current_fill_pct": 76.19,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 76.11
-      },
-      {
-        "day": 2,
-        "fill_pct": 76.04
-      },
-      {
-        "day": 3,
-        "fill_pct": 75.97
-      },
-      {
-        "day": 4,
-        "fill_pct": 75.89
-      },
-      {
-        "day": 5,
-        "fill_pct": 75.82
-      },
-      {
-        "day": 6,
-        "fill_pct": 75.74
-      },
-      {
-        "day": 7,
-        "fill_pct": 75.67
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_SHEKI_19",
-    "region": "Sheki",
-    "model": "Ridge",
-    "current_fill_pct": 72.98,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 73.0
-      },
-      {
-        "day": 2,
-        "fill_pct": 73.02
-      },
-      {
-        "day": 3,
-        "fill_pct": 73.04
-      },
-      {
-        "day": 4,
-        "fill_pct": 73.06
-      },
-      {
-        "day": 5,
-        "fill_pct": 73.08
-      },
-      {
-        "day": 6,
-        "fill_pct": 73.1
-      },
-      {
-        "day": 7,
-        "fill_pct": 73.12
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_GANJA_12",
-    "region": "Ganja",
-    "model": "Ridge",
-    "current_fill_pct": 68.48,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 68.54
-      },
-      {
-        "day": 2,
-        "fill_pct": 68.59
-      },
-      {
-        "day": 3,
-        "fill_pct": 68.65
-      },
-      {
-        "day": 4,
-        "fill_pct": 68.71
-      },
-      {
-        "day": 5,
-        "fill_pct": 68.77
-      },
-      {
-        "day": 6,
-        "fill_pct": 68.83
-      },
-      {
-        "day": 7,
-        "fill_pct": 68.88
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_NAKHCHIVAN_27",
-    "region": "Nakhchivan",
-    "model": "Ridge",
-    "current_fill_pct": 68.78,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 68.72
-      },
-      {
-        "day": 2,
-        "fill_pct": 68.66
-      },
-      {
-        "day": 3,
-        "fill_pct": 68.6
-      },
-      {
-        "day": 4,
-        "fill_pct": 68.54
-      },
-      {
-        "day": 5,
-        "fill_pct": 68.48
-      },
-      {
-        "day": 6,
-        "fill_pct": 68.42
-      },
-      {
-        "day": 7,
-        "fill_pct": 68.36
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_LANKARAN_18",
-    "region": "Lankaran",
-    "model": "Ridge",
-    "current_fill_pct": 64.89,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 64.72
-      },
-      {
-        "day": 2,
-        "fill_pct": 64.55
-      },
-      {
-        "day": 3,
-        "fill_pct": 64.39
-      },
-      {
-        "day": 4,
-        "fill_pct": 64.22
-      },
-      {
-        "day": 5,
-        "fill_pct": 64.05
-      },
-      {
-        "day": 6,
-        "fill_pct": 63.89
-      },
-      {
-        "day": 7,
-        "fill_pct": 63.72
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_GANJA_09",
-    "region": "Ganja",
-    "model": "Ridge",
-    "current_fill_pct": 61.63,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 61.62
-      },
-      {
-        "day": 2,
-        "fill_pct": 61.61
-      },
-      {
-        "day": 3,
-        "fill_pct": 61.6
-      },
-      {
-        "day": 4,
-        "fill_pct": 61.59
-      },
-      {
-        "day": 5,
-        "fill_pct": 61.58
-      },
-      {
-        "day": 6,
-        "fill_pct": 61.57
-      },
-      {
-        "day": 7,
-        "fill_pct": 61.55
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_QAZAKH_29",
-    "region": "Qazakh",
-    "model": "Ridge",
-    "current_fill_pct": 61.04,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 60.89
-      },
-      {
-        "day": 2,
-        "fill_pct": 60.75
-      },
-      {
-        "day": 3,
-        "fill_pct": 60.6
-      },
-      {
-        "day": 4,
-        "fill_pct": 60.46
-      },
-      {
-        "day": 5,
-        "fill_pct": 60.31
-      },
-      {
-        "day": 6,
-        "fill_pct": 60.16
-      },
-      {
-        "day": 7,
-        "fill_pct": 60.02
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_LANKARAN_15",
-    "region": "Lankaran",
-    "model": "Ridge",
-    "current_fill_pct": 59.16,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 59.15
-      },
-      {
-        "day": 2,
-        "fill_pct": 59.13
-      },
-      {
-        "day": 3,
-        "fill_pct": 59.12
-      },
-      {
-        "day": 4,
-        "fill_pct": 59.1
-      },
-      {
-        "day": 5,
-        "fill_pct": 59.09
-      },
-      {
-        "day": 6,
-        "fill_pct": 59.07
-      },
-      {
-        "day": 7,
-        "fill_pct": 59.06
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_GANJA_11",
-    "region": "Ganja",
-    "model": "Ridge",
-    "current_fill_pct": 58.28,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 58.38
-      },
-      {
-        "day": 2,
-        "fill_pct": 58.49
-      },
-      {
-        "day": 3,
-        "fill_pct": 58.6
-      },
-      {
-        "day": 4,
-        "fill_pct": 58.7
-      },
-      {
-        "day": 5,
-        "fill_pct": 58.81
-      },
-      {
-        "day": 6,
-        "fill_pct": 58.92
-      },
-      {
-        "day": 7,
-        "fill_pct": 59.02
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_GANJA_10",
-    "region": "Ganja",
-    "model": "Ridge",
-    "current_fill_pct": 56.39,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 56.13
-      },
-      {
-        "day": 2,
-        "fill_pct": 55.88
-      },
-      {
-        "day": 3,
-        "fill_pct": 55.62
-      },
-      {
-        "day": 4,
-        "fill_pct": 55.37
-      },
-      {
-        "day": 5,
-        "fill_pct": 55.11
-      },
-      {
-        "day": 6,
-        "fill_pct": 54.86
-      },
-      {
-        "day": 7,
-        "fill_pct": 54.61
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_GANJA_13",
-    "region": "Ganja",
-    "model": "Ridge",
-    "current_fill_pct": 49.19,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 49.36
-      },
-      {
-        "day": 2,
-        "fill_pct": 49.52
-      },
-      {
-        "day": 3,
-        "fill_pct": 49.69
-      },
-      {
-        "day": 4,
-        "fill_pct": 49.85
-      },
-      {
-        "day": 5,
-        "fill_pct": 50.01
-      },
-      {
-        "day": 6,
-        "fill_pct": 50.18
-      },
-      {
-        "day": 7,
-        "fill_pct": 50.34
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_KHACHMAZ_22",
-    "region": "Khachmaz",
-    "model": "Ridge",
-    "current_fill_pct": 46.41,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 46.46
-      },
-      {
-        "day": 2,
-        "fill_pct": 46.52
-      },
-      {
-        "day": 3,
-        "fill_pct": 46.57
-      },
-      {
-        "day": 4,
-        "fill_pct": 46.62
-      },
-      {
-        "day": 5,
-        "fill_pct": 46.67
-      },
-      {
-        "day": 6,
-        "fill_pct": 46.72
-      },
-      {
-        "day": 7,
-        "fill_pct": 46.77
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_ABSHERON_06",
-    "region": "Absheron",
-    "model": "Ridge",
-    "current_fill_pct": 44.99,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 45.11
-      },
-      {
-        "day": 2,
-        "fill_pct": 45.23
-      },
-      {
-        "day": 3,
-        "fill_pct": 45.35
-      },
-      {
-        "day": 4,
-        "fill_pct": 45.47
-      },
-      {
-        "day": 5,
-        "fill_pct": 45.59
-      },
-      {
-        "day": 6,
-        "fill_pct": 45.71
-      },
-      {
-        "day": 7,
-        "fill_pct": 45.83
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_YEVLAKH_26",
-    "region": "Yevlakh",
-    "model": "Ridge",
-    "current_fill_pct": 45.82,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 45.78
-      },
-      {
-        "day": 2,
-        "fill_pct": 45.74
-      },
-      {
-        "day": 3,
-        "fill_pct": 45.71
-      },
-      {
-        "day": 4,
-        "fill_pct": 45.67
-      },
-      {
-        "day": 5,
-        "fill_pct": 45.63
-      },
-      {
-        "day": 6,
-        "fill_pct": 45.59
-      },
-      {
-        "day": 7,
-        "fill_pct": 45.55
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_KALBAJAR_31",
-    "region": "Kalbajar",
-    "model": "Ridge",
-    "current_fill_pct": 42.14,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 42.1
-      },
-      {
-        "day": 2,
-        "fill_pct": 42.05
-      },
-      {
-        "day": 3,
-        "fill_pct": 42.01
-      },
-      {
-        "day": 4,
-        "fill_pct": 41.96
-      },
-      {
-        "day": 5,
-        "fill_pct": 41.92
-      },
-      {
-        "day": 6,
-        "fill_pct": 41.87
-      },
-      {
-        "day": 7,
-        "fill_pct": 41.82
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_SHEKI_21",
-    "region": "Sheki",
-    "model": "Ridge",
-    "current_fill_pct": 42.84,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 42.69
-      },
-      {
-        "day": 2,
-        "fill_pct": 42.54
-      },
-      {
-        "day": 3,
-        "fill_pct": 42.39
-      },
-      {
-        "day": 4,
-        "fill_pct": 42.25
-      },
-      {
-        "day": 5,
-        "fill_pct": 42.1
-      },
-      {
-        "day": 6,
-        "fill_pct": 41.95
-      },
-      {
-        "day": 7,
-        "fill_pct": 41.8
+        "fill_pct": 87.72
       }
     ],
     "risk_over_90_in_7d": false
@@ -965,183 +114,72 @@
     "warehouse_id": "WH_GANJA_14",
     "region": "Ganja",
     "model": "Ridge",
-    "current_fill_pct": 37.11,
+    "current_fill_pct": 86.36,
     "forecast": [
       {
         "day": 1,
-        "fill_pct": 37.07
+        "fill_pct": 86.33
       },
       {
         "day": 2,
-        "fill_pct": 37.04
+        "fill_pct": 86.3
       },
       {
         "day": 3,
-        "fill_pct": 37.01
+        "fill_pct": 86.27
       },
       {
         "day": 4,
-        "fill_pct": 36.97
+        "fill_pct": 86.24
       },
       {
         "day": 5,
-        "fill_pct": 36.94
+        "fill_pct": 86.21
       },
       {
         "day": 6,
-        "fill_pct": 36.9
+        "fill_pct": 86.18
       },
       {
         "day": 7,
-        "fill_pct": 36.87
+        "fill_pct": 86.15
       }
     ],
     "risk_over_90_in_7d": false
   },
   {
-    "warehouse_id": "WH_KHANKENDI_32",
-    "region": "Khankendi",
+    "warehouse_id": "WH_SHEKI_31",
+    "region": "Sheki",
     "model": "Ridge",
-    "current_fill_pct": 34.31,
+    "current_fill_pct": 84.14,
     "forecast": [
       {
         "day": 1,
-        "fill_pct": 34.35
+        "fill_pct": 84.15
       },
       {
         "day": 2,
-        "fill_pct": 34.38
+        "fill_pct": 84.16
       },
       {
         "day": 3,
-        "fill_pct": 34.42
+        "fill_pct": 84.17
       },
       {
         "day": 4,
-        "fill_pct": 34.45
+        "fill_pct": 84.18
       },
       {
         "day": 5,
-        "fill_pct": 34.49
+        "fill_pct": 84.2
       },
       {
         "day": 6,
-        "fill_pct": 34.52
+        "fill_pct": 84.21
       },
       {
         "day": 7,
-        "fill_pct": 34.56
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_ABSHERON_02",
-    "region": "Absheron",
-    "model": "Ridge",
-    "current_fill_pct": 30.64,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 30.5
-      },
-      {
-        "day": 2,
-        "fill_pct": 30.37
-      },
-      {
-        "day": 3,
-        "fill_pct": 30.24
-      },
-      {
-        "day": 4,
-        "fill_pct": 30.1
-      },
-      {
-        "day": 5,
-        "fill_pct": 29.97
-      },
-      {
-        "day": 6,
-        "fill_pct": 29.84
-      },
-      {
-        "day": 7,
-        "fill_pct": 29.7
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_ABSHERON_03",
-    "region": "Absheron",
-    "model": "Ridge",
-    "current_fill_pct": 29.12,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 29.05
-      },
-      {
-        "day": 2,
-        "fill_pct": 28.98
-      },
-      {
-        "day": 3,
-        "fill_pct": 28.91
-      },
-      {
-        "day": 4,
-        "fill_pct": 28.84
-      },
-      {
-        "day": 5,
-        "fill_pct": 28.77
-      },
-      {
-        "day": 6,
-        "fill_pct": 28.7
-      },
-      {
-        "day": 7,
-        "fill_pct": 28.63
-      }
-    ],
-    "risk_over_90_in_7d": false
-  },
-  {
-    "warehouse_id": "WH_QAZAKH_30",
-    "region": "Qazakh",
-    "model": "Ridge",
-    "current_fill_pct": 21.41,
-    "forecast": [
-      {
-        "day": 1,
-        "fill_pct": 21.5
-      },
-      {
-        "day": 2,
-        "fill_pct": 21.59
-      },
-      {
-        "day": 3,
-        "fill_pct": 21.68
-      },
-      {
-        "day": 4,
-        "fill_pct": 21.77
-      },
-      {
-        "day": 5,
-        "fill_pct": 21.86
-      },
-      {
-        "day": 6,
-        "fill_pct": 21.95
-      },
-      {
-        "day": 7,
-        "fill_pct": 22.03
+        "fill_pct": 84.22
       }
     ],
     "risk_over_90_in_7d": false
@@ -1150,35 +188,997 @@
     "warehouse_id": "WH_ABSHERON_07",
     "region": "Absheron",
     "model": "Ridge",
-    "current_fill_pct": 22.19,
+    "current_fill_pct": 81.06,
     "forecast": [
       {
         "day": 1,
-        "fill_pct": 22.1
+        "fill_pct": 80.97
       },
       {
         "day": 2,
-        "fill_pct": 22.0
+        "fill_pct": 80.88
       },
       {
         "day": 3,
-        "fill_pct": 21.91
+        "fill_pct": 80.8
       },
       {
         "day": 4,
-        "fill_pct": 21.81
+        "fill_pct": 80.71
       },
       {
         "day": 5,
-        "fill_pct": 21.72
+        "fill_pct": 80.62
       },
       {
         "day": 6,
-        "fill_pct": 21.63
+        "fill_pct": 80.53
       },
       {
         "day": 7,
-        "fill_pct": 21.53
+        "fill_pct": 80.45
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_QAZAKH_29",
+    "region": "Qazakh",
+    "model": "Ridge",
+    "current_fill_pct": 80.58,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 80.55
+      },
+      {
+        "day": 2,
+        "fill_pct": 80.52
+      },
+      {
+        "day": 3,
+        "fill_pct": 80.49
+      },
+      {
+        "day": 4,
+        "fill_pct": 80.46
+      },
+      {
+        "day": 5,
+        "fill_pct": 80.43
+      },
+      {
+        "day": 6,
+        "fill_pct": 80.41
+      },
+      {
+        "day": 7,
+        "fill_pct": 80.38
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_KHACHMAZ_19",
+    "region": "Khachmaz",
+    "model": "Ridge",
+    "current_fill_pct": 79.01,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 78.98
+      },
+      {
+        "day": 2,
+        "fill_pct": 78.96
+      },
+      {
+        "day": 3,
+        "fill_pct": 78.94
+      },
+      {
+        "day": 4,
+        "fill_pct": 78.91
+      },
+      {
+        "day": 5,
+        "fill_pct": 78.89
+      },
+      {
+        "day": 6,
+        "fill_pct": 78.86
+      },
+      {
+        "day": 7,
+        "fill_pct": 78.84
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_03",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 75.13,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 75.07
+      },
+      {
+        "day": 2,
+        "fill_pct": 75.0
+      },
+      {
+        "day": 3,
+        "fill_pct": 74.94
+      },
+      {
+        "day": 4,
+        "fill_pct": 74.87
+      },
+      {
+        "day": 5,
+        "fill_pct": 74.81
+      },
+      {
+        "day": 6,
+        "fill_pct": 74.74
+      },
+      {
+        "day": 7,
+        "fill_pct": 74.68
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_NAKHCHIVAN_26",
+    "region": "Nakhchivan",
+    "model": "Ridge",
+    "current_fill_pct": 69.14,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 69.15
+      },
+      {
+        "day": 2,
+        "fill_pct": 69.15
+      },
+      {
+        "day": 3,
+        "fill_pct": 69.16
+      },
+      {
+        "day": 4,
+        "fill_pct": 69.17
+      },
+      {
+        "day": 5,
+        "fill_pct": 69.18
+      },
+      {
+        "day": 6,
+        "fill_pct": 69.18
+      },
+      {
+        "day": 7,
+        "fill_pct": 69.19
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_GANJA_12",
+    "region": "Ganja",
+    "model": "Ridge",
+    "current_fill_pct": 68.14,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 68.2
+      },
+      {
+        "day": 2,
+        "fill_pct": 68.26
+      },
+      {
+        "day": 3,
+        "fill_pct": 68.31
+      },
+      {
+        "day": 4,
+        "fill_pct": 68.37
+      },
+      {
+        "day": 5,
+        "fill_pct": 68.42
+      },
+      {
+        "day": 6,
+        "fill_pct": 68.48
+      },
+      {
+        "day": 7,
+        "fill_pct": 68.53
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_LANKARAN_21",
+    "region": "Lankaran",
+    "model": "Ridge",
+    "current_fill_pct": 63.39,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 63.48
+      },
+      {
+        "day": 2,
+        "fill_pct": 63.58
+      },
+      {
+        "day": 3,
+        "fill_pct": 63.67
+      },
+      {
+        "day": 4,
+        "fill_pct": 63.77
+      },
+      {
+        "day": 5,
+        "fill_pct": 63.87
+      },
+      {
+        "day": 6,
+        "fill_pct": 63.96
+      },
+      {
+        "day": 7,
+        "fill_pct": 64.06
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_KALBAJAR_17",
+    "region": "Kalbajar",
+    "model": "Ridge",
+    "current_fill_pct": 63.15,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 63.08
+      },
+      {
+        "day": 2,
+        "fill_pct": 63.0
+      },
+      {
+        "day": 3,
+        "fill_pct": 62.93
+      },
+      {
+        "day": 4,
+        "fill_pct": 62.86
+      },
+      {
+        "day": 5,
+        "fill_pct": 62.78
+      },
+      {
+        "day": 6,
+        "fill_pct": 62.71
+      },
+      {
+        "day": 7,
+        "fill_pct": 62.64
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_05",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 61.61,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 61.63
+      },
+      {
+        "day": 2,
+        "fill_pct": 61.64
+      },
+      {
+        "day": 3,
+        "fill_pct": 61.65
+      },
+      {
+        "day": 4,
+        "fill_pct": 61.67
+      },
+      {
+        "day": 5,
+        "fill_pct": 61.68
+      },
+      {
+        "day": 6,
+        "fill_pct": 61.69
+      },
+      {
+        "day": 7,
+        "fill_pct": 61.71
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_NAKHCHIVAN_24",
+    "region": "Nakhchivan",
+    "model": "Ridge",
+    "current_fill_pct": 61.73,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 61.7
+      },
+      {
+        "day": 2,
+        "fill_pct": 61.67
+      },
+      {
+        "day": 3,
+        "fill_pct": 61.64
+      },
+      {
+        "day": 4,
+        "fill_pct": 61.61
+      },
+      {
+        "day": 5,
+        "fill_pct": 61.58
+      },
+      {
+        "day": 6,
+        "fill_pct": 61.55
+      },
+      {
+        "day": 7,
+        "fill_pct": 61.52
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_NAKHCHIVAN_23",
+    "region": "Nakhchivan",
+    "model": "Ridge",
+    "current_fill_pct": 60.06,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 59.98
+      },
+      {
+        "day": 2,
+        "fill_pct": 59.91
+      },
+      {
+        "day": 3,
+        "fill_pct": 59.84
+      },
+      {
+        "day": 4,
+        "fill_pct": 59.76
+      },
+      {
+        "day": 5,
+        "fill_pct": 59.69
+      },
+      {
+        "day": 6,
+        "fill_pct": 59.62
+      },
+      {
+        "day": 7,
+        "fill_pct": 59.54
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_11",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 56.33,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 56.44
+      },
+      {
+        "day": 2,
+        "fill_pct": 56.55
+      },
+      {
+        "day": 3,
+        "fill_pct": 56.66
+      },
+      {
+        "day": 4,
+        "fill_pct": 56.77
+      },
+      {
+        "day": 5,
+        "fill_pct": 56.88
+      },
+      {
+        "day": 6,
+        "fill_pct": 56.99
+      },
+      {
+        "day": 7,
+        "fill_pct": 57.1
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_NAKHCHIVAN_25",
+    "region": "Nakhchivan",
+    "model": "Ridge",
+    "current_fill_pct": 53.82,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 53.79
+      },
+      {
+        "day": 2,
+        "fill_pct": 53.76
+      },
+      {
+        "day": 3,
+        "fill_pct": 53.73
+      },
+      {
+        "day": 4,
+        "fill_pct": 53.7
+      },
+      {
+        "day": 5,
+        "fill_pct": 53.67
+      },
+      {
+        "day": 6,
+        "fill_pct": 53.64
+      },
+      {
+        "day": 7,
+        "fill_pct": 53.6
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_YEVLAKH_32",
+    "region": "Yevlakh",
+    "model": "Ridge",
+    "current_fill_pct": 53.58,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 53.51
+      },
+      {
+        "day": 2,
+        "fill_pct": 53.45
+      },
+      {
+        "day": 3,
+        "fill_pct": 53.39
+      },
+      {
+        "day": 4,
+        "fill_pct": 53.32
+      },
+      {
+        "day": 5,
+        "fill_pct": 53.26
+      },
+      {
+        "day": 6,
+        "fill_pct": 53.2
+      },
+      {
+        "day": 7,
+        "fill_pct": 53.13
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_LANKARAN_22",
+    "region": "Lankaran",
+    "model": "Ridge",
+    "current_fill_pct": 49.55,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 49.51
+      },
+      {
+        "day": 2,
+        "fill_pct": 49.47
+      },
+      {
+        "day": 3,
+        "fill_pct": 49.43
+      },
+      {
+        "day": 4,
+        "fill_pct": 49.39
+      },
+      {
+        "day": 5,
+        "fill_pct": 49.35
+      },
+      {
+        "day": 6,
+        "fill_pct": 49.31
+      },
+      {
+        "day": 7,
+        "fill_pct": 49.27
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_04",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 42.65,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 42.57
+      },
+      {
+        "day": 2,
+        "fill_pct": 42.49
+      },
+      {
+        "day": 3,
+        "fill_pct": 42.4
+      },
+      {
+        "day": 4,
+        "fill_pct": 42.32
+      },
+      {
+        "day": 5,
+        "fill_pct": 42.24
+      },
+      {
+        "day": 6,
+        "fill_pct": 42.16
+      },
+      {
+        "day": 7,
+        "fill_pct": 42.08
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_NAKHCHIVAN_27",
+    "region": "Nakhchivan",
+    "model": "Ridge",
+    "current_fill_pct": 41.24,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 41.26
+      },
+      {
+        "day": 2,
+        "fill_pct": 41.27
+      },
+      {
+        "day": 3,
+        "fill_pct": 41.28
+      },
+      {
+        "day": 4,
+        "fill_pct": 41.29
+      },
+      {
+        "day": 5,
+        "fill_pct": 41.3
+      },
+      {
+        "day": 6,
+        "fill_pct": 41.32
+      },
+      {
+        "day": 7,
+        "fill_pct": 41.33
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_GANJA_16",
+    "region": "Ganja",
+    "model": "Ridge",
+    "current_fill_pct": 39.89,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 40.05
+      },
+      {
+        "day": 2,
+        "fill_pct": 40.21
+      },
+      {
+        "day": 3,
+        "fill_pct": 40.37
+      },
+      {
+        "day": 4,
+        "fill_pct": 40.53
+      },
+      {
+        "day": 5,
+        "fill_pct": 40.69
+      },
+      {
+        "day": 6,
+        "fill_pct": 40.85
+      },
+      {
+        "day": 7,
+        "fill_pct": 41.01
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_GANJA_15",
+    "region": "Ganja",
+    "model": "Ridge",
+    "current_fill_pct": 40.44,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 40.35
+      },
+      {
+        "day": 2,
+        "fill_pct": 40.25
+      },
+      {
+        "day": 3,
+        "fill_pct": 40.16
+      },
+      {
+        "day": 4,
+        "fill_pct": 40.06
+      },
+      {
+        "day": 5,
+        "fill_pct": 39.97
+      },
+      {
+        "day": 6,
+        "fill_pct": 39.87
+      },
+      {
+        "day": 7,
+        "fill_pct": 39.78
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_02",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 38.58,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 38.46
+      },
+      {
+        "day": 2,
+        "fill_pct": 38.34
+      },
+      {
+        "day": 3,
+        "fill_pct": 38.22
+      },
+      {
+        "day": 4,
+        "fill_pct": 38.1
+      },
+      {
+        "day": 5,
+        "fill_pct": 37.97
+      },
+      {
+        "day": 6,
+        "fill_pct": 37.85
+      },
+      {
+        "day": 7,
+        "fill_pct": 37.73
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_SHEKI_30",
+    "region": "Sheki",
+    "model": "Ridge",
+    "current_fill_pct": 36.28,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 36.34
+      },
+      {
+        "day": 2,
+        "fill_pct": 36.41
+      },
+      {
+        "day": 3,
+        "fill_pct": 36.47
+      },
+      {
+        "day": 4,
+        "fill_pct": 36.54
+      },
+      {
+        "day": 5,
+        "fill_pct": 36.6
+      },
+      {
+        "day": 6,
+        "fill_pct": 36.66
+      },
+      {
+        "day": 7,
+        "fill_pct": 36.73
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_10",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 36.87,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 36.61
+      },
+      {
+        "day": 2,
+        "fill_pct": 36.36
+      },
+      {
+        "day": 3,
+        "fill_pct": 36.11
+      },
+      {
+        "day": 4,
+        "fill_pct": 35.85
+      },
+      {
+        "day": 5,
+        "fill_pct": 35.6
+      },
+      {
+        "day": 6,
+        "fill_pct": 35.35
+      },
+      {
+        "day": 7,
+        "fill_pct": 35.09
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_GANJA_13",
+    "region": "Ganja",
+    "model": "Ridge",
+    "current_fill_pct": 31.95,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 32.12
+      },
+      {
+        "day": 2,
+        "fill_pct": 32.29
+      },
+      {
+        "day": 3,
+        "fill_pct": 32.46
+      },
+      {
+        "day": 4,
+        "fill_pct": 32.63
+      },
+      {
+        "day": 5,
+        "fill_pct": 32.8
+      },
+      {
+        "day": 6,
+        "fill_pct": 32.98
+      },
+      {
+        "day": 7,
+        "fill_pct": 33.15
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_06",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 29.78,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 29.9
+      },
+      {
+        "day": 2,
+        "fill_pct": 30.02
+      },
+      {
+        "day": 3,
+        "fill_pct": 30.14
+      },
+      {
+        "day": 4,
+        "fill_pct": 30.26
+      },
+      {
+        "day": 5,
+        "fill_pct": 30.38
+      },
+      {
+        "day": 6,
+        "fill_pct": 30.5
+      },
+      {
+        "day": 7,
+        "fill_pct": 30.62
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_KHANKENDI_20",
+    "region": "Khankendi",
+    "model": "Ridge",
+    "current_fill_pct": 29.58,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 29.51
+      },
+      {
+        "day": 2,
+        "fill_pct": 29.43
+      },
+      {
+        "day": 3,
+        "fill_pct": 29.35
+      },
+      {
+        "day": 4,
+        "fill_pct": 29.28
+      },
+      {
+        "day": 5,
+        "fill_pct": 29.2
+      },
+      {
+        "day": 6,
+        "fill_pct": 29.12
+      },
+      {
+        "day": 7,
+        "fill_pct": 29.05
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_ABSHERON_08",
+    "region": "Absheron",
+    "model": "Ridge",
+    "current_fill_pct": 27.94,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 27.91
+      },
+      {
+        "day": 2,
+        "fill_pct": 27.89
+      },
+      {
+        "day": 3,
+        "fill_pct": 27.86
+      },
+      {
+        "day": 4,
+        "fill_pct": 27.84
+      },
+      {
+        "day": 5,
+        "fill_pct": 27.82
+      },
+      {
+        "day": 6,
+        "fill_pct": 27.79
+      },
+      {
+        "day": 7,
+        "fill_pct": 27.77
+      }
+    ],
+    "risk_over_90_in_7d": false
+  },
+  {
+    "warehouse_id": "WH_QAZAKH_28",
+    "region": "Qazakh",
+    "model": "Ridge",
+    "current_fill_pct": 26.62,
+    "forecast": [
+      {
+        "day": 1,
+        "fill_pct": 26.73
+      },
+      {
+        "day": 2,
+        "fill_pct": 26.83
+      },
+      {
+        "day": 3,
+        "fill_pct": 26.94
+      },
+      {
+        "day": 4,
+        "fill_pct": 27.05
+      },
+      {
+        "day": 5,
+        "fill_pct": 27.15
+      },
+      {
+        "day": 6,
+        "fill_pct": 27.26
+      },
+      {
+        "day": 7,
+        "fill_pct": 27.36
       }
     ],
     "risk_over_90_in_7d": false
