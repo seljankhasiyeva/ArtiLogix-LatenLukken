@@ -1,0 +1,482 @@
+[
+  {
+    "region": "Absheron",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0010",
+        "store_confidence": 0.9952999949455261
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0010",
+        "store_confidence": 0.9952999949455261
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0010",
+        "store_confidence": 0.9952999949455261
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0010",
+        "store_confidence": 0.9952999949455261
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0010",
+        "store_confidence": 0.9952999949455261
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0010",
+        "store_confidence": 0.9952999949455261
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0010",
+        "store_confidence": 0.9952999949455261
+      }
+    ]
+  },
+  {
+    "region": "Ganja",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0070",
+        "store_confidence": 0.9922000169754028
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0070",
+        "store_confidence": 0.9922000169754028
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0070",
+        "store_confidence": 0.9922000169754028
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0070",
+        "store_confidence": 0.9922000169754028
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0070",
+        "store_confidence": 0.9922000169754028
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0070",
+        "store_confidence": 0.9922000169754028
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0070",
+        "store_confidence": 0.9922000169754028
+      }
+    ]
+  },
+  {
+    "region": "Kalbajar",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0199",
+        "store_confidence": 0.9848999977111816
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0199",
+        "store_confidence": 0.9855999946594238
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0199",
+        "store_confidence": 0.986299991607666
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0199",
+        "store_confidence": 0.986299991607666
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0199",
+        "store_confidence": 0.9861000180244446
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0199",
+        "store_confidence": 0.9861000180244446
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0199",
+        "store_confidence": 0.9861000180244446
+      }
+    ]
+  },
+  {
+    "region": "Khachmaz",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0175",
+        "store_confidence": 0.9810000061988831
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0175",
+        "store_confidence": 0.9810000061988831
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0175",
+        "store_confidence": 0.9810000061988831
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0175",
+        "store_confidence": 0.9810000061988831
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0175",
+        "store_confidence": 0.9810000061988831
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0175",
+        "store_confidence": 0.9810000061988831
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0175",
+        "store_confidence": 0.9810000061988831
+      }
+    ]
+  },
+  {
+    "region": "Khankendi",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0200",
+        "store_confidence": 0.9944000244140625
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0200",
+        "store_confidence": 0.9944000244140625
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0200",
+        "store_confidence": 0.9944000244140625
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0200",
+        "store_confidence": 0.9944000244140625
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0200",
+        "store_confidence": 0.9944000244140625
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0200",
+        "store_confidence": 0.9944000244140625
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0200",
+        "store_confidence": 0.9944000244140625
+      }
+    ]
+  },
+  {
+    "region": "Lankaran",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0135",
+        "store_confidence": 0.9894999861717224
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0135",
+        "store_confidence": 0.9894999861717224
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0135",
+        "store_confidence": 0.9894999861717224
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0135",
+        "store_confidence": 0.9894999861717224
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0135",
+        "store_confidence": 0.9894999861717224
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0135",
+        "store_confidence": 0.9894999861717224
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0135",
+        "store_confidence": 0.9894000291824341
+      }
+    ]
+  },
+  {
+    "region": "Nakhchivan",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0103",
+        "store_confidence": 0.9891999959945679
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0103",
+        "store_confidence": 0.9891999959945679
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0103",
+        "store_confidence": 0.9891999959945679
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0103",
+        "store_confidence": 0.9891999959945679
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0103",
+        "store_confidence": 0.9891999959945679
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0103",
+        "store_confidence": 0.9891999959945679
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0103",
+        "store_confidence": 0.9891999959945679
+      }
+    ]
+  },
+  {
+    "region": "Qazakh",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0192",
+        "store_confidence": 0.9909999966621399
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0192",
+        "store_confidence": 0.9909999966621399
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0192",
+        "store_confidence": 0.9909999966621399
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0192",
+        "store_confidence": 0.9909999966621399
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0192",
+        "store_confidence": 0.9909999966621399
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0192",
+        "store_confidence": 0.9909999966621399
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0192",
+        "store_confidence": 0.9909999966621399
+      }
+    ]
+  },
+  {
+    "region": "Sheki",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0161",
+        "store_confidence": 0.9944999814033508
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0161",
+        "store_confidence": 0.9944999814033508
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0161",
+        "store_confidence": 0.9944999814033508
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0161",
+        "store_confidence": 0.9944999814033508
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0161",
+        "store_confidence": 0.9944999814033508
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0161",
+        "store_confidence": 0.9944999814033508
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0161",
+        "store_confidence": 0.9944999814033508
+      }
+    ]
+  },
+  {
+    "region": "Yevlakh",
+    "store_model": "XGBoost_tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Saturday",
+        "predicted_store_id": "ST0179",
+        "store_confidence": 0.989799976348877
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sunday",
+        "predicted_store_id": "ST0179",
+        "store_confidence": 0.989799976348877
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Monday",
+        "predicted_store_id": "ST0179",
+        "store_confidence": 0.989799976348877
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tuesday",
+        "predicted_store_id": "ST0179",
+        "store_confidence": 0.989799976348877
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wednesday",
+        "predicted_store_id": "ST0179",
+        "store_confidence": 0.989799976348877
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thursday",
+        "predicted_store_id": "ST0179",
+        "store_confidence": 0.989799976348877
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Friday",
+        "predicted_store_id": "ST0179",
+        "store_confidence": 0.989799976348877
+      }
+    ]
+  }
+]
