@@ -1,284 +1,74 @@
 [
   {
     "region": "Absheron",
-    "model": "CatBoost",
+    "model": "XGBoost_Tuned",
     "forecast": [
       {
         "date": "2026-06-13",
         "day_of_week": "Sat",
+        "item_count_sum": 121
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "item_count_sum": 142
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "item_count_sum": 167
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "item_count_sum": 140
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
         "item_count_sum": 128
       },
       {
-        "date": "2026-06-14",
-        "day_of_week": "Sun",
-        "item_count_sum": 138
-      },
-      {
-        "date": "2026-06-15",
-        "day_of_week": "Mon",
-        "item_count_sum": 168
-      },
-      {
-        "date": "2026-06-16",
-        "day_of_week": "Tue",
-        "item_count_sum": 143
-      },
-      {
-        "date": "2026-06-17",
-        "day_of_week": "Wed",
-        "item_count_sum": 127
-      },
-      {
         "date": "2026-06-18",
         "day_of_week": "Thu",
-        "item_count_sum": 124
+        "item_count_sum": 118
       },
       {
         "date": "2026-06-19",
         "day_of_week": "Fri",
-        "item_count_sum": 109
+        "item_count_sum": 104
       }
     ],
-    "total_7day_item_count": 937
+    "total_7day_item_count": 920
   },
   {
     "region": "Ganja",
-    "model": "CatBoost",
+    "model": "XGBoost_Tuned",
     "forecast": [
       {
         "date": "2026-06-13",
         "day_of_week": "Sat",
-        "item_count_sum": 39
+        "item_count_sum": 36
       },
       {
         "date": "2026-06-14",
         "day_of_week": "Sun",
-        "item_count_sum": 46
+        "item_count_sum": 40
       },
       {
         "date": "2026-06-15",
         "day_of_week": "Mon",
-        "item_count_sum": 55
+        "item_count_sum": 49
       },
       {
         "date": "2026-06-16",
         "day_of_week": "Tue",
-        "item_count_sum": 42
+        "item_count_sum": 38
       },
       {
         "date": "2026-06-17",
         "day_of_week": "Wed",
-        "item_count_sum": 37
-      },
-      {
-        "date": "2026-06-18",
-        "day_of_week": "Thu",
-        "item_count_sum": 37
-      },
-      {
-        "date": "2026-06-19",
-        "day_of_week": "Fri",
-        "item_count_sum": 32
-      }
-    ],
-    "total_7day_item_count": 288
-  },
-  {
-    "region": "Kalbajar",
-    "model": "CatBoost",
-    "forecast": [
-      {
-        "date": "2026-06-13",
-        "day_of_week": "Sat",
-        "item_count_sum": 2
-      },
-      {
-        "date": "2026-06-14",
-        "day_of_week": "Sun",
-        "item_count_sum": 3
-      },
-      {
-        "date": "2026-06-15",
-        "day_of_week": "Mon",
-        "item_count_sum": 3
-      },
-      {
-        "date": "2026-06-16",
-        "day_of_week": "Tue",
-        "item_count_sum": 2
-      },
-      {
-        "date": "2026-06-17",
-        "day_of_week": "Wed",
-        "item_count_sum": 1
-      },
-      {
-        "date": "2026-06-18",
-        "day_of_week": "Thu",
-        "item_count_sum": 2
-      },
-      {
-        "date": "2026-06-19",
-        "day_of_week": "Fri",
-        "item_count_sum": 1
-      }
-    ],
-    "total_7day_item_count": 14
-  },
-  {
-    "region": "Khachmaz",
-    "model": "CatBoost",
-    "forecast": [
-      {
-        "date": "2026-06-13",
-        "day_of_week": "Sat",
-        "item_count_sum": 15
-      },
-      {
-        "date": "2026-06-14",
-        "day_of_week": "Sun",
-        "item_count_sum": 18
-      },
-      {
-        "date": "2026-06-15",
-        "day_of_week": "Mon",
-        "item_count_sum": 22
-      },
-      {
-        "date": "2026-06-16",
-        "day_of_week": "Tue",
-        "item_count_sum": 16
-      },
-      {
-        "date": "2026-06-17",
-        "day_of_week": "Wed",
-        "item_count_sum": 14
-      },
-      {
-        "date": "2026-06-18",
-        "day_of_week": "Thu",
-        "item_count_sum": 14
-      },
-      {
-        "date": "2026-06-19",
-        "day_of_week": "Fri",
-        "item_count_sum": 12
-      }
-    ],
-    "total_7day_item_count": 111
-  },
-  {
-    "region": "Khankendi",
-    "model": "CatBoost",
-    "forecast": [
-      {
-        "date": "2026-06-13",
-        "day_of_week": "Sat",
-        "item_count_sum": 7
-      },
-      {
-        "date": "2026-06-14",
-        "day_of_week": "Sun",
-        "item_count_sum": 8
-      },
-      {
-        "date": "2026-06-15",
-        "day_of_week": "Mon",
-        "item_count_sum": 10
-      },
-      {
-        "date": "2026-06-16",
-        "day_of_week": "Tue",
-        "item_count_sum": 6
-      },
-      {
-        "date": "2026-06-17",
-        "day_of_week": "Wed",
-        "item_count_sum": 6
-      },
-      {
-        "date": "2026-06-18",
-        "day_of_week": "Thu",
-        "item_count_sum": 6
-      },
-      {
-        "date": "2026-06-19",
-        "day_of_week": "Fri",
-        "item_count_sum": 5
-      }
-    ],
-    "total_7day_item_count": 48
-  },
-  {
-    "region": "Lankaran",
-    "model": "CatBoost",
-    "forecast": [
-      {
-        "date": "2026-06-13",
-        "day_of_week": "Sat",
-        "item_count_sum": 15
-      },
-      {
-        "date": "2026-06-14",
-        "day_of_week": "Sun",
-        "item_count_sum": 18
-      },
-      {
-        "date": "2026-06-15",
-        "day_of_week": "Mon",
-        "item_count_sum": 21
-      },
-      {
-        "date": "2026-06-16",
-        "day_of_week": "Tue",
-        "item_count_sum": 16
-      },
-      {
-        "date": "2026-06-17",
-        "day_of_week": "Wed",
-        "item_count_sum": 14
-      },
-      {
-        "date": "2026-06-18",
-        "day_of_week": "Thu",
-        "item_count_sum": 14
-      },
-      {
-        "date": "2026-06-19",
-        "day_of_week": "Fri",
-        "item_count_sum": 13
-      }
-    ],
-    "total_7day_item_count": 111
-  },
-  {
-    "region": "Nakhchivan",
-    "model": "CatBoost",
-    "forecast": [
-      {
-        "date": "2026-06-13",
-        "day_of_week": "Sat",
-        "item_count_sum": 37
-      },
-      {
-        "date": "2026-06-14",
-        "day_of_week": "Sun",
-        "item_count_sum": 45
-      },
-      {
-        "date": "2026-06-15",
-        "day_of_week": "Mon",
-        "item_count_sum": 51
-      },
-      {
-        "date": "2026-06-16",
-        "day_of_week": "Tue",
-        "item_count_sum": 39
-      },
-      {
-        "date": "2026-06-17",
-        "day_of_week": "Wed",
-        "item_count_sum": 35
+        "item_count_sum": 34
       },
       {
         "date": "2026-06-18",
@@ -288,98 +78,308 @@
       {
         "date": "2026-06-19",
         "day_of_week": "Fri",
-        "item_count_sum": 28
+        "item_count_sum": 29
       }
     ],
-    "total_7day_item_count": 268
+    "total_7day_item_count": 259
   },
   {
-    "region": "Qazakh",
-    "model": "CatBoost",
+    "region": "Kalbajar",
+    "model": "XGBoost_Tuned",
     "forecast": [
       {
         "date": "2026-06-13",
         "day_of_week": "Sat",
-        "item_count_sum": 14
+        "item_count_sum": 3
       },
       {
         "date": "2026-06-14",
         "day_of_week": "Sun",
+        "item_count_sum": 4
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "item_count_sum": 3
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "item_count_sum": 3
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "item_count_sum": 2
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "item_count_sum": 2
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "item_count_sum": 2
+      }
+    ],
+    "total_7day_item_count": 19
+  },
+  {
+    "region": "Khachmaz",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
         "item_count_sum": 15
       },
       {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "item_count_sum": 17
+      },
+      {
         "date": "2026-06-15",
         "day_of_week": "Mon",
-        "item_count_sum": 18
+        "item_count_sum": 20
       },
       {
         "date": "2026-06-16",
         "day_of_week": "Tue",
-        "item_count_sum": 13
+        "item_count_sum": 15
       },
       {
         "date": "2026-06-17",
         "day_of_week": "Wed",
-        "item_count_sum": 12
+        "item_count_sum": 14
       },
       {
         "date": "2026-06-18",
         "day_of_week": "Thu",
-        "item_count_sum": 13
+        "item_count_sum": 14
       },
       {
         "date": "2026-06-19",
         "day_of_week": "Fri",
-        "item_count_sum": 10
+        "item_count_sum": 12
       }
     ],
-    "total_7day_item_count": 95
+    "total_7day_item_count": 107
   },
   {
-    "region": "Sheki",
-    "model": "CatBoost",
+    "region": "Khankendi",
+    "model": "XGBoost_Tuned",
     "forecast": [
       {
         "date": "2026-06-13",
         "day_of_week": "Sat",
-        "item_count_sum": 18
+        "item_count_sum": 8
       },
       {
         "date": "2026-06-14",
         "day_of_week": "Sun",
-        "item_count_sum": 21
+        "item_count_sum": 9
       },
       {
         "date": "2026-06-15",
         "day_of_week": "Mon",
-        "item_count_sum": 27
+        "item_count_sum": 9
       },
       {
         "date": "2026-06-16",
         "day_of_week": "Tue",
-        "item_count_sum": 21
+        "item_count_sum": 7
       },
       {
         "date": "2026-06-17",
         "day_of_week": "Wed",
-        "item_count_sum": 18
+        "item_count_sum": 7
       },
       {
         "date": "2026-06-18",
         "day_of_week": "Thu",
+        "item_count_sum": 6
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "item_count_sum": 6
+      }
+    ],
+    "total_7day_item_count": 52
+  },
+  {
+    "region": "Lankaran",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "item_count_sum": 15
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "item_count_sum": 17
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
         "item_count_sum": 19
       },
       {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "item_count_sum": 16
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "item_count_sum": 14
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "item_count_sum": 13
+      },
+      {
         "date": "2026-06-19",
         "day_of_week": "Fri",
-        "item_count_sum": 17
+        "item_count_sum": 12
       }
     ],
-    "total_7day_item_count": 141
+    "total_7day_item_count": 106
+  },
+  {
+    "region": "Nakhchivan",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "item_count_sum": 35
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "item_count_sum": 42
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "item_count_sum": 48
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "item_count_sum": 37
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "item_count_sum": 33
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "item_count_sum": 32
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "item_count_sum": 27
+      }
+    ],
+    "total_7day_item_count": 254
+  },
+  {
+    "region": "Qazakh",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "item_count_sum": 15
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "item_count_sum": 16
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "item_count_sum": 19
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "item_count_sum": 15
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "item_count_sum": 14
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "item_count_sum": 13
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "item_count_sum": 12
+      }
+    ],
+    "total_7day_item_count": 104
+  },
+  {
+    "region": "Sheki",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "item_count_sum": 19
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "item_count_sum": 21
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "item_count_sum": 26
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "item_count_sum": 19
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "item_count_sum": 18
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "item_count_sum": 17
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "item_count_sum": 15
+      }
+    ],
+    "total_7day_item_count": 135
   },
   {
     "region": "Yevlakh",
-    "model": "CatBoost",
+    "model": "XGBoost_Tuned",
     "forecast": [
       {
         "date": "2026-06-13",
@@ -389,12 +389,12 @@
       {
         "date": "2026-06-14",
         "day_of_week": "Sun",
-        "item_count_sum": 8
+        "item_count_sum": 7
       },
       {
         "date": "2026-06-15",
         "day_of_week": "Mon",
-        "item_count_sum": 8
+        "item_count_sum": 6
       },
       {
         "date": "2026-06-16",
@@ -404,7 +404,7 @@
       {
         "date": "2026-06-17",
         "day_of_week": "Wed",
-        "item_count_sum": 5
+        "item_count_sum": 6
       },
       {
         "date": "2026-06-18",
@@ -414,9 +414,9 @@
       {
         "date": "2026-06-19",
         "day_of_week": "Fri",
-        "item_count_sum": 4
+        "item_count_sum": 5
       }
     ],
-    "total_7day_item_count": 42
+    "total_7day_item_count": 41
   }
 ]
