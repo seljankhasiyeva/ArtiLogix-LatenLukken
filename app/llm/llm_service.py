@@ -191,3 +191,4 @@ def stream_chat(
 
     if len(history) > MAX_HISTORY:
         history[:] = history[-MAX_HISTORY:]
+        
