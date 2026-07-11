@@ -242,28 +242,36 @@ uvicorn app.main:app --reload --port 8001
 ## 📁 Project Structure
 
 ```
-artilogix/
-├── data/
-│   ├── raw/                  # 15 synthetic CSV files
-│   └── duckdb/               # artilogix.duckdb
-├── ml/
-│   ├── models/               # .joblib files (LightGBM, Prophet, Ridge)
-│   ├── forecast.py           # Step 1 — order volume forecast
-│   ├── load_pipeline.py      # Step 2 — desi derivation
-│   ├── vehicle_selector.py   # Step 3 — decision table
-│   └── cost_calculator.py    # Step 4 — deterministic cost
-├── api/
-│   ├── main.py               # FastAPI app
-│   ├── routers/              # forecast, dispatch, chat, analytics
-│   └── llm_service.py        # Claude API + tool calling
-├── frontend/
-│   ├── marketplace/          # Marketplace portal
-│   └── logistics/            # Logistics dashboard
-├── tests/
-│   └── test_logic.py         # 20 unit tests (Step 3+4)
+ArtiLogix-LatenLukken/
+├── app/                        # Backend — FastAPI [AI Engineer]
+│   ├── logic/                  # Step 3+4 — vehicle selector + cost calc [ML Engineer]
+│   ├── llm/                    # LLM integration — tool calling + SSE [ML Engineer]
+│   │   └── system_prompts/     # marketplace.txt + logistics.txt
+│   ├── routers/                # 4 REST controllers
+│   ├── schemas/                # Pydantic models
+│   ├── services/               # DuckDB + model loader
+│   └── static/                 # Frontend HTML/CSS/JS [AI Engineer]
+│       ├── css/
+│       └── js/
+├── data/                       # 15 parquet files (Git tracked)
+├── db/                         # Data pipeline scripts [AI Engineer]
+├── docs/                       # Reports + pattern docs
+├── eval/                       # LLM + ML evaluation outputs
+│   └── ml_evaluation/
+│       └── forecast_plots/
+├── models/                     # Trained .joblib files [DS-1, DS-2]
+│   ├── forecast/               # Per-region LightGBM models
+│   └── prophet/                # Prophet fallback models
+├── notebooks/
+│   ├── eda/                    # EDA notebooks [ML Engineer]
+│   └── ml/                     # ML model notebooks [DS-1, DS-2]
+├── tests/                      # 20 unit tests — logic layer [ML Engineer]
+├── .env.example
+├── .gitignore
 ├── docker-compose.yml
+├── nginx.conf
 ├── requirements.txt
-└── .env.example
+└── README.md
 ```
 
 ---
