@@ -16,6 +16,10 @@ FASTAPI_URL = "http://localhost:8001"
 MAX_HISTORY = 20
 TEMPERATURE = 0.3
 
+# Tools whose FastAPI endpoint is declared with @router.post (see dispatch.py).
+# Everything else (forecast, route-history, warehouse, store) is @router.get.
+POST_TOOLS = {"get_dispatch_plan", "get_scenario"}
+
 BASE_DIR = Path(__file__).parent
 
 
@@ -26,15 +30,23 @@ def _load_system_prompt(role: str) -> str:
 
 
 def _call_fastapi(tool_name: str, arguments: dict) -> dict:
+    print(f"[DEBUG] Tool called: {tool_name}  args: {arguments}")
     endpoint = TOOL_ENDPOINT_MAP.get(tool_name)
     if not endpoint:
         return {"error": f"No endpoint mapped for tool '{tool_name}'"}
     try:
-        response = requests.post(
-            f"{FASTAPI_URL}{endpoint}",
-            json=arguments,
-            timeout=10,
-        )
+        if tool_name in POST_TOOLS:
+            response = requests.post(
+                f"{FASTAPI_URL}{endpoint}",
+                params=arguments,
+                timeout=10,
+            )
+        else:
+            response = requests.get(
+                f"{FASTAPI_URL}{endpoint}",
+                params=arguments,
+                timeout=10,
+            )
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
@@ -50,7 +62,7 @@ def _call_ollama(model: str, messages: list[dict], use_tools: bool) -> dict:
     }
     if use_tools:
         payload["tools"] = TOOLS
-    response = requests.post(OLLAMA_URL, json=payload, timeout=60)
+    response = requests.post(OLLAMA_URL, json=payload, timeout=120)
     response.raise_for_status()
     return response.json()
 
@@ -115,6 +127,7 @@ def chat(
     if tool_calls:
         answer, history = _handle_tool_call(tool_calls, history, system_prompt, model)
     else:
+        print("[DEBUG] No tool called — model answered directly.")
         answer = assistant_msg.get("content", "")
         history.append({"role": "assistant", "content": answer})
 
@@ -191,4 +204,3 @@ def stream_chat(
 
     if len(history) > MAX_HISTORY:
         history[:] = history[-MAX_HISTORY:]
-        
