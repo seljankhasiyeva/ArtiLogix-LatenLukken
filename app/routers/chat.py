@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from app.auth import verify_token
+from app.auth import verify_token, verify_token_query
 from app.llm.llm_service import chat, stream_chat
 
 router = APIRouter()
@@ -28,8 +28,12 @@ class ChatRequest(BaseModel):
 @router.post("/message")
 def send_message(
     req         : ChatRequest,
+    current_user: dict = Depends(verify_token),
 ):
-    role    = "logistics" 
+    # Role now comes from the caller's JWT (set at /auth/token login),
+    # not hardcoded — marketplace users get the marketplace prompt,
+    # logistics users get the logistics prompt.
+    role    = current_user["role"]
     history = _get_history(req.session_id)
 
     answer, updated = chat(
@@ -49,21 +53,25 @@ def send_message(
 
 @router.get("/stream")
 def stream_message(
-    message     : str,
-    session_id  : str  = "default",
-    current_user: dict = Depends(verify_token),
+    message   : str,
+    token     : str,
+    session_id: str = "default",
 ):
-    role    = current_user.get("role", "marketplace")
+    # EventSource (used by the frontend for SSE) cannot send an
+    # Authorization header, so the token is passed as a query param here
+    # instead and verified the same way as the header-based flow.
+    current_user = verify_token_query(token)
+    role    = current_user["role"]
     history = _get_history(session_id)
 
     def event_stream():
-        for token in stream_chat(
+        for token_chunk in stream_chat(
             user_message = message,
             model        = GEMINI_MODEL,
             role         = role,
             history      = history,
         ):
-            yield f"data: {token}\n\n"
+            yield f"data: {token_chunk}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(
