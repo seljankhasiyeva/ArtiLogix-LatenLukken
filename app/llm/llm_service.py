@@ -1,26 +1,25 @@
-import json
+import os
 import requests
 from pathlib import Path
 from typing import Generator
+from dotenv import load_dotenv  # <-- Bunu əlavə edirik
 
-from app.llm.tools import (
-    TOOLS,
-    TOOL_ENDPOINT_MAP,
-    supports_native_tools,
-    build_tool_prompt_suffix,
-    parse_tool_call,
-)
+from google import genai
+from google.genai import types
 
-OLLAMA_URL  = "http://localhost:11434/api/chat"
+from app.llm.tools import TOOL_ENDPOINT_MAP, POST_TOOLS, build_gemini_tools
+
 FASTAPI_URL = "http://localhost:8001"
 MAX_HISTORY = 20
 TEMPERATURE = 0.3
 
-# Tools whose FastAPI endpoint is declared with @router.post (see dispatch.py).
-# Everything else (forecast, route-history, warehouse, store) is @router.get.
-POST_TOOLS = {"get_dispatch_plan", "get_scenario"}
-
 BASE_DIR = Path(__file__).parent
+
+# 1. Müştərini başlatmadan əvvəl .env faylındakı dəyişənləri sistemə (os.environ) yükləyirik
+load_dotenv()
+
+# 2. İndi genai.Client() GOOGLE_API_KEY-i avtomatik tapacaq
+client = genai.Client()
 
 
 def _load_system_prompt(role: str) -> str:
@@ -53,30 +52,80 @@ def _call_fastapi(tool_name: str, arguments: dict) -> dict:
         return {"error": str(e)}
 
 
-def _call_ollama(model: str, messages: list[dict], use_tools: bool) -> dict:
-    payload = {
-        "model"   : model,
-        "messages": messages,
-        "stream"  : False,
-        "options" : {"temperature": TEMPERATURE},
-    }
-    if use_tools:
-        payload["tools"] = TOOLS
-    response = requests.post(OLLAMA_URL, json=payload, timeout=120)
-    response.raise_for_status()
-    return response.json()
+def _history_to_contents(history: list[dict]) -> list[types.Content]:
+    """
+    Converts our internal history format into Gemini's Content objects.
+
+    Internal history entries look like one of:
+      {"role": "user", "content": "..."}
+      {"role": "assistant", "content": "..."}
+      {"role": "assistant", "function_call": {"name": ..., "args": {...}, "thought_signature": bytes|None}}
+      {"role": "function", "name": ..., "response": {...}}
+
+    Gemini 3 ("thinking") models attach an opaque `thought_signature` to
+    each function-call Part. That signature MUST be echoed back on the
+    matching Part when we replay history, or the API rejects the request
+    with: "Function call is missing a thought_signature". We therefore
+    store it alongside the function call and re-attach it here.
+    """
+    contents = []
+    for turn in history:
+        role = turn["role"]
+
+        if role == "user":
+            contents.append(
+                types.Content(role="user", parts=[types.Part.from_text(text=turn["content"])])
+            )
+        elif role == "assistant":
+            if turn.get("function_call"):
+                fc = turn["function_call"]
+                part = types.Part.from_function_call(name=fc["name"], args=fc["args"])
+                if fc.get("thought_signature"):
+                    part.thought_signature = fc["thought_signature"]
+                contents.append(types.Content(role="model", parts=[part]))
+            else:
+                contents.append(
+                    types.Content(role="model", parts=[types.Part.from_text(text=turn.get("content", ""))])
+                )
+        elif role == "function":
+            contents.append(
+                types.Content(
+                    role="user",
+                    parts=[types.Part.from_function_response(name=turn["name"], response=turn["response"])],
+                )
+            )
+    return contents
 
 
-def _handle_tool_call(
-    tool_calls    : list,
-    history       : list[dict],
-    system_prompt : str,
-    model         : str,
-) -> tuple[str, list[dict]]:
-    tool_call       = tool_calls[0]["function"]
-    tool_name       = tool_call["name"]
-    arguments       = tool_call.get("arguments", {})
-    tool_result     = _call_fastapi(tool_name, arguments)
+def _first_function_call_part(response):
+    """Returns the first Part in the response that contains a function
+    call, preserving its thought_signature (response.function_calls only
+    returns bare FunctionCall objects and drops the signature)."""
+    if not response.candidates or not response.candidates[0].content:
+        return None
+    for part in response.candidates[0].content.parts or []:
+        if part.function_call is not None:
+            return part
+    return None
+
+
+def _build_config(system_prompt: str) -> types.GenerateContentConfig:
+    return types.GenerateContentConfig(
+        system_instruction=system_prompt,
+        tools=build_gemini_tools(),
+        temperature=TEMPERATURE,
+        # We execute tool calls ourselves via _call_fastapi (HTTP calls to
+        # our own FastAPI endpoints), so Gemini's automatic function
+        # calling — which expects local Python callables — must stay off.
+        automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+    )
+
+
+def _run_tool_call(fc, thought_signature, history: list[dict], system_prompt: str, model: str):
+    """Executes one function call, appends the result to history, and asks
+    the model for a final answer given the tool result."""
+    args = dict(fc.args) if fc.args else {}
+    tool_result = _call_fastapi(fc.name, args)
 
     if "error" in tool_result:
         tool_result["_system_note"] = (
@@ -84,52 +133,44 @@ def _handle_tool_call(
             "Tell the user the data is unavailable and ask them to try again."
         )
 
-    tool_result_str = json.dumps(tool_result, ensure_ascii=False)
+    history.append({
+        "role": "assistant",
+        "function_call": {"name": fc.name, "args": args, "thought_signature": thought_signature},
+    })
+    history.append({"role": "function", "name": fc.name, "response": tool_result})
 
-    history.append({"role": "assistant", "content": "", "tool_calls": tool_calls})
-    history.append({"role": "tool", "content": tool_result_str})
-
-    messages = [{"role": "system", "content": system_prompt}] + history
-    final    = _call_ollama(model, messages, use_tools=False)
-    answer   = final.get("message", {}).get("content", "")
-
-    history.append({"role": "assistant", "content": answer})
-    return answer, history
-
-
-def _extract_tool_calls(native: bool, assistant_msg: dict) -> list | None:
-    tool_calls = assistant_msg.get("tool_calls") if native else None
-    if not tool_calls and not native:
-        parsed = parse_tool_call(assistant_msg.get("content", ""))
-        if parsed:
-            tool_calls = [{"function": {"name": parsed["tool"], "arguments": parsed["arguments"]}}]
-    return tool_calls
+    return history
 
 
 def chat(
     user_message: str,
-    model       : str,
-    role        : str,
-    history     : list[dict],
+    model: str,
+    role: str,
+    history: list[dict],
 ) -> tuple[str, list[dict]]:
     system_prompt = _load_system_prompt(role)
-    native        = supports_native_tools(model)
-
-    if not native:
-        system_prompt += build_tool_prompt_suffix()
-
     history.append({"role": "user", "content": user_message})
-    messages      = [{"role": "system", "content": system_prompt}] + history
-    result        = _call_ollama(model, messages, use_tools=native)
-    assistant_msg = result.get("message", {})
-    tool_calls    = _extract_tool_calls(native, assistant_msg)
 
-    if tool_calls:
-        answer, history = _handle_tool_call(tool_calls, history, system_prompt, model)
+    contents = _history_to_contents(history)
+    response = client.models.generate_content(
+        model=model, contents=contents, config=_build_config(system_prompt)
+    )
+
+    fc_part = _first_function_call_part(response)
+    if fc_part:
+        fc = fc_part.function_call
+        history = _run_tool_call(fc, fc_part.thought_signature, history, system_prompt, model)
+
+        contents = _history_to_contents(history)
+        final = client.models.generate_content(
+            model=model, contents=contents, config=_build_config(system_prompt)
+        )
+        answer = final.text or ""
     else:
         print("[DEBUG] No tool called — model answered directly.")
-        answer = assistant_msg.get("content", "")
-        history.append({"role": "assistant", "content": answer})
+        answer = response.text or ""
+
+    history.append({"role": "assistant", "content": answer})
 
     if len(history) > MAX_HISTORY:
         history[:] = history[-MAX_HISTORY:]
@@ -139,64 +180,41 @@ def chat(
 
 def stream_chat(
     user_message: str,
-    model       : str,
-    role        : str,
-    history     : list[dict],
+    model: str,
+    role: str,
+    history: list[dict],
 ) -> Generator[str, None, None]:
     system_prompt = _load_system_prompt(role)
-    native        = supports_native_tools(model)
-
-    if not native:
-        system_prompt += build_tool_prompt_suffix()
-
     history.append({"role": "user", "content": user_message})
-    messages      = [{"role": "system", "content": system_prompt}] + history
-    probe         = _call_ollama(model, messages, use_tools=native)
-    probe_msg     = probe.get("message", {})
-    tool_calls    = _extract_tool_calls(native, probe_msg)
 
-    if tool_calls:
+    contents = _history_to_contents(history)
+
+    # Probe (non-streaming) first, same pattern as before, so we can detect
+    # a function call and run it before streaming the final answer.
+    probe = client.models.generate_content(
+        model=model, contents=contents, config=_build_config(system_prompt)
+    )
+
+    fc_part = _first_function_call_part(probe)
+    if fc_part:
         yield "Calculating..."
 
-        tool_call       = tool_calls[0]["function"]
-        tool_result     = _call_fastapi(tool_call["name"], tool_call.get("arguments", {}))
+        fc = fc_part.function_call
+        history = _run_tool_call(fc, fc_part.thought_signature, history, system_prompt, model)
 
-        if "error" in tool_result:
-            tool_result["_system_note"] = (
-                "Tool call failed. Do NOT estimate or invent data. "
-                "Tell the user the data is unavailable and ask them to try again."
-            )
-
-        tool_result_str = json.dumps(tool_result, ensure_ascii=False)
-
-        history.append({"role": "assistant", "content": "", "tool_calls": tool_calls})
-        history.append({"role": "tool", "content": tool_result_str})
-
-        messages = [{"role": "system", "content": system_prompt}] + history
-        payload  = {
-            "model"   : model,
-            "messages": messages,
-            "stream"  : True,
-            "options" : {"temperature": TEMPERATURE},
-        }
-
+        contents = _history_to_contents(history)
         full = ""
-        with requests.post(OLLAMA_URL, json=payload, stream=True, timeout=(5, 120)) as resp:
-            for line in resp.iter_lines():
-                if not line:
-                    continue
-                chunk = json.loads(line)
-                token = chunk.get("message", {}).get("content", "")
-                if token:
-                    full += token
-                    yield token
-                if chunk.get("done"):
-                    break
+        for chunk in client.models.generate_content_stream(
+            model=model, contents=contents, config=_build_config(system_prompt)
+        ):
+            token = chunk.text or ""
+            if token:
+                full += token
+                yield token
 
         history.append({"role": "assistant", "content": full})
-
     else:
-        answer = probe_msg.get("content", "")
+        answer = probe.text or ""
         for word in answer.split(" "):
             if word:
                 yield word + " "

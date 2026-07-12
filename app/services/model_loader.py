@@ -2,26 +2,25 @@ import os
 import joblib
 
 _models = {}
-
 MODELS_DIR = "models"
 
 
 def load_models():
     global _models
+    if not os.path.exists(MODELS_DIR):
+        print(f"  [XƏTA] '{MODELS_DIR}' qovluğu tapılmadı.")
+        return
 
-    forecast_dir = os.path.join(MODELS_DIR, "forecast")
-    if os.path.exists(forecast_dir):
-        for fname in os.listdir(forecast_dir):
-            if fname.endswith(".joblib"):
-                region = fname.replace(".joblib", "")
-                path = os.path.join(forecast_dir, fname)
-                _models[f"forecast_{region}"] = joblib.load(path)
-                print(f"  Loaded forecast model: {region}")
+    for fname in os.listdir(MODELS_DIR):
+        if fname.endswith(".joblib"):
+            model_name = fname.replace(".joblib", "")
+            path = os.path.join(MODELS_DIR, fname)
 
-    avg_weight_path = os.path.join(MODELS_DIR, "avg_weight_model.joblib")
-    if os.path.exists(avg_weight_path):
-        _models["avg_weight"] = joblib.load(avg_weight_path)
-        print("  Loaded avg_weight model")
+            try:
+                _models[model_name] = joblib.load(path)
+                print(f"  Loaded model: {model_name}")
+            except Exception as e:
+                print(f"  [XƏTA] {fname} yüklənərkən xəta baş verdi: {e}")
 
     if not _models:
         print("  No models found — running in stub mode")
