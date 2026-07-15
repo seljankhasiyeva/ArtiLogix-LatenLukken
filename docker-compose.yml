@@ -1,0 +1,16 @@
+services:
+  artilogix-api:
+    build: .
+    container_name: artilogix-api
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ALGORITHM=${JWT_ALGORITHM:-HS256}
+      - DB_PATH=${DB_PATH:-data/artilogix.duckdb}
+    restart: unless-stopped

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtiLogix - Login Portal</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .login-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Left Side: Particle Animation */
+        .login-visual-panel {
+            flex: 1.2;
+            background: linear-gradient(135deg, #09090b 0%, #150f24 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 48px;
+            overflow: hidden;
+            border-right: 1px solid var(--border);
+        }
+
+        [data-theme="light"] .login-visual-panel {
+            background: linear-gradient(135deg, #F4F4F5 0%, #EDE9FE 100%);
+        }
+
+        .login-visual-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .login-visual-content {
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .login-visual-title {
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.2;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .login-visual-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 500px;
+        }
+
+        .login-visual-footer {
+            position: relative;
+            z-index: 2;
+            color: var(--text-muted);
+            font-size: 13px;
+            display: flex;
+            gap: 24px;
+            pointer-events: auto;
+        }
+
+        /* Right Side: Glass Auth Form */
+        .login-auth-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background-color: var(--bg-main);
+            z-index: 10;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            backdrop-filter: var(--backdrop-blur);
+            animation: fade-in 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .login-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 0 20px var(--primary-glow-heavy);
+        }
+
+        .login-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+            color: var(--text-main);
+        }
+
+        .login-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Tab buttons */
+        .auth-tabs {
+            display: flex;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            z-index: 2;
+            transition: color var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-tab-btn.active {
+            color: var(--text-main);
+        }
+
+        .auth-tab-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            z-index: 1;
+            transition: transform var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Password Wrapper */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color var(--transition-fast);
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--text-main);
+        }
+
+        /* Demo helper badges */
+        .demo-helpers {
+            margin-top: 24px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .demo-helpers-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .demo-badge-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .demo-badge {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .demo-badge:hover {
+            background-color: var(--primary-glow);
+            border-color: var(--primary-lighter);
+        }
+
+        .demo-badge-role {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .demo-badge-user {
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        /* Responsive overrides */
+        @media (max-width: 900px) {
+            .login-visual-panel {
+                display: none;
+            }
+            .login-auth-panel {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-layout">
+        <!-- Left Column: Canvas Animation -->
+        <div class="login-visual-panel">
+            <canvas id="visual-canvas" class="login-visual-canvas"></canvas>
+            
+            <div class="login-visual-content">
+                <h1 class="login-visual-title">ARTILOGIX<br>AI Logistics Intelligence</h1>
+                <p class="login-visual-subtitle">
+                    A premium time-series demand forecasting and automated dispatch platform optimized for the Caucasus freight corridor.
+                </p>
+            </div>
+
+            <div class="login-visual-footer">
+                <button class="theme-switch-btn" id="theme-toggle" title="Toggle Theme" style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition-fast); box-shadow: var(--shadow);">
+                    <i data-lucide="sun"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Column: Glass Form -->
+        <div class="login-auth-panel">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="login-logo">
+                        <div class="login-logo-text" style="font-size: 32px; letter-spacing: -1.2px; font-weight: 700;">ArtiLogix</div>
+                    </div>
+                    <p>Enter your credentials to access the logistics node</p>
+                </div>
+
+                <form id="auth-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address or System ID</label>
+                        <input type="text" id="email" class="form-control" placeholder="name@domain.com or DRV-1000" required autocomplete="new-username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="new-password">
+                            <button type="button" class="password-toggle-btn" id="password-toggle">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="submit-btn">
+                        <span id="btn-text">Sign In</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- Shown instead of the form above when the account has a
+                     temporary password that must be replaced before use. -->
+                <form id="change-password-form" style="display: none;">
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+                        This account is using a temporary password. Please set a new one to continue.
+                    </p>
+                    <div class="form-group">
+                        <label for="new-password" class="form-label">New Password</label>
+                        <input type="password" id="new-password" class="form-control" placeholder="Min. 4 characters" required minlength="4">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                        Set Password &amp; Continue
+                    </button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script Core -->
+    <script src="js/app.js?v=1.1"></script>
+    <!-- Login Specific Script -->
+    <script src="js/login.js?v=1.1"></script>
+</body>
+</html>

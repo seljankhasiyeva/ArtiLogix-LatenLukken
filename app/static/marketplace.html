@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtiLogix - Marketplace Portal</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Header styling matching dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-title-container h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+        }
+
+        .header-title-container p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Compact layout overrides */
+        .form-group {
+            margin-bottom: 12px !important;
+        }
+        .card {
+            padding: 20px !important;
+        }
+        .card-header {
+            margin-bottom: 16px !important;
+        }
+
+        /* Marketplace Specific Layout */
+        .marketplace-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .toggle-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .toggle-input {
+            display: none;
+        }
+
+        .toggle-slider {
+            width: 44px;
+            height: 24px;
+            background-color: var(--border);
+            border-radius: 12px;
+            position: relative;
+            transition: all var(--transition-fast);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: white;
+            top: 3px;
+            left: 3px;
+            transition: all var(--transition-fast);
+        }
+
+        .toggle-input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        .toggle-input:checked + .toggle-slider::before {
+            transform: translateX(20px);
+        }
+
+        /* Result Animation Card */
+        .result-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 380px;
+            border: 1px dashed var(--border);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .result-panel.active {
+            border-style: solid;
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px var(--shadow-glow);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(124, 58, 237, 0.03) 100%);
+        }
+
+        .result-vehicle-graphic {
+            width: 90px;
+            height: 90px;
+            background: var(--primary-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--primary-light);
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px var(--primary-glow);
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); box-shadow: 0 0 15px var(--primary-glow); }
+            50% { transform: scale(1.05); box-shadow: 0 0 25px var(--primary-glow-heavy); }
+            100% { transform: scale(1); box-shadow: 0 0 15px var(--primary-glow); }
+        }
+
+        .result-cost {
+            font-family: var(--font-mono);
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--primary-lighter);
+            margin: 10px 0;
+        }
+
+        /* Skeletons */
+        .skeleton-loader {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .skeleton-line {
+            height: 16px;
+            background: linear-gradient(90deg, var(--border) 25%, var(--border-hover) 50%, var(--border) 75%);
+            background-size: 200% 100%;
+            animation: loading-shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+
+        /* Filter Row */
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            padding-left: 40px;
+        }
+
+        /* Badge elements */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-success { background: var(--success-bg); color: var(--success); }
+        .badge-warning { background: var(--warning-bg); color: var(--warning); }
+        .badge-danger  { background: var(--danger-bg); color: var(--danger); }
+        .badge-info    { background: var(--info-bg); color: var(--info); }
+
+        /* Floating Chat bubble for Marketplace */
+        .marketplace-chat-drawer {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 500;
+        }
+
+        .chat-toggle-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+            border: none;
+            transition: all var(--transition-fast);
+        }
+
+        .chat-toggle-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 30px rgba(124, 58, 237, 0.5);
+            background-color: var(--primary-hover);
+        }
+
+        /* Slide-over AI Panel (Glassmorphism full-height) */
+        .ai-slide-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            bottom: 0;
+            width: 420px;
+            background: rgba(17, 17, 19, 0.85);
+            border-left: 1px solid var(--border);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            transition: right var(--transition-slow) cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ai-slide-panel.open {
+            right: 0;
+        }
+
+        .ai-panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-panel-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .ai-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-close-btn:hover {
+            color: var(--text-main);
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.45;
+            animation: fade-in 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .chat-msg.user {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-msg.assistant {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid var(--border);
+        }
+
+        .chat-msg-thinking {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+        }
+
+        .thinking-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            animation: thinking-bounce 1s infinite alternate;
+        }
+
+        .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes thinking-bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-4px); }
+        }
+
+        .ai-panel-input-container {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .ai-suggested-prompts {
+            padding: 12px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background-color: rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border);
+        }
+
+        .suggested-prompt-btn {
+            background-color: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .suggested-prompt-btn:hover {
+            color: var(--text-main);
+            border-color: var(--primary);
+            background-color: var(--primary-glow);
+        }
+
+        /* Backdrop filter overlay when AI slides in */
+        .ai-backdrop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-normal);
+        }
+
+        .ai-backdrop-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .main-content {
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100% !important;
+            max-width: 1400px;
+            padding: 32px 24px;
+        }
+
+        @media (max-width: 950px) {
+            .marketplace-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <header class="dashboard-header animated-fade-in">
+                <div class="header-title-container">
+                    <h1 class="logo-text" style="-webkit-text-fill-color: initial; background: none; font-size: 26px;">Marketplace Logistics</h1>
+                    <p>Book dispatches, estimate shipping costs & view route options</p>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-switch-btn btn btn-secondary" id="theme-toggle" title="Toggle Theme" style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0;">
+                        <i data-lucide="sun"></i>
+                    </button>
+                    <button class="btn btn-primary" id="refresh-marketplace">
+                        <i data-lucide="refresh-cw"></i>
+                        <span>Sync Market</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="logout()" style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--danger); border-color: rgba(239, 68, 68, 0.2);" title="Logout">
+                        <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+            </header>
+
+            <section class="marketplace-grid animated-fade-in" style="animation-delay: 100ms;">
+                <!-- Shipment Estimator Input Form -->
+                <div class="card">
+                    <div class="card-header" style="margin-bottom: 24px;">
+                        <h3 class="card-title">Freight Estimator</h3>
+                    </div>
+
+                    <form id="estimator-form">
+                        <!-- Compact Form Inputs Grid -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px;">
+                            <div class="form-group">
+                                <label for="destination" class="form-label">Destination Hub</label>
+                                <select id="destination" class="form-control" required>
+                                    <option value="Ganja" selected>Ganja Hub</option>
+                                    <option value="Lankaran">Lankaran Hub</option>
+                                    <option value="Khachmaz">Khachmaz Hub</option>
+                                    <option value="Sheki">Sheki Hub</option>
+                                    <option value="Yevlakh">Yevlakh Junction</option>
+                                    <option value="Nakhchivan">Nakhchivan Exclave</option>
+                                    <option value="Qazakh">Qazakh Border</option>
+                                    <option value="Kalbajar">Kalbajar Outpost</option>
+                                    <option value="Khankendi">Khankendi Hub</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipping-date" class="form-label">Planned Dispatch Date</label>
+                                <input type="date" id="shipping-date" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px;">
+                            <div class="form-group">
+                                <label for="weight" class="form-label">Cargo Weight (kg)</label>
+                                <input type="number" id="weight" class="form-control" value="650" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="volume" class="form-label">Cargo Volume (Desi)</label>
+                                <input type="number" id="volume" class="form-control" value="430" min="1" required>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px;">
+                            <div class="form-group">
+                                <label for="delivery-type" class="form-label">Delivery Type</label>
+                                <select id="delivery-type" class="form-control" required>
+                                    <option value="middle_mile" selected>Middle Mile (Hub-to-Hub)</option>
+                                    <option value="last_mile">Last Mile (Hub-to-Address)</option>
+                                    <option value="all_mile">All Mile (Full Route)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="delivery-priority" class="form-label">Delivery Priority</label>
+                                <select id="delivery-priority" class="form-control" required>
+                                    <option value="economy">Economy (-15%)</option>
+                                    <option value="standard" selected>Standard</option>
+                                    <option value="express">Express (+40%)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; margin-bottom: 16px;">
+                            <div class="form-group">
+                                <label for="route-waypoint" class="form-label">Corridor Waypoint</label>
+                                <select id="route-waypoint" class="form-control" required>
+                                    <option value="none" selected>Direct / None</option>
+                                    <option value="Salyan">Salyan Hub</option>
+                                    <option value="Yevlakh">Yevlakh Hub</option>
+                                    <option value="Gobustan">Gobustan Hub</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-top: 20px;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="is-holiday" class="toggle-input">
+                                    <span class="toggle-slider"></span>
+                                    <span style="font-size: 13px; font-weight: 500;">Holiday surcharge week (+30%)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i data-lucide="calculator"></i>
+                            <span>Calculate Shipping quote</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Estimation Prediction display -->
+                <div class="card result-panel" id="result-panel">
+                    <!-- Loading state skeleton -->
+                    <div class="skeleton-loader" id="result-skeleton">
+                        <div class="skeleton-line" style="width: 40%; height: 32px; border-radius: 8px; margin: 0 auto 12px auto;"></div>
+                        <div class="skeleton-line" style="width: 60%; height: 24px; margin: 0 auto 8px auto;"></div>
+                        <div class="skeleton-line" style="width: 80%; height: 16px; margin: 0 auto 8px auto;"></div>
+                        <div class="skeleton-line" style="width: 70%; height: 16px; margin: 0 auto;"></div>
+                    </div>
+
+                    <!-- Initial/Empty state -->
+                    <div class="empty-state" id="result-empty">
+                        <h4>Calculation Ready</h4>
+                        <p style="font-size: 13px; margin-top: 6px;">Fill out the estimator parameters and run calculation to retrieve live AI dispatch recommendations.</p>
+                    </div>
+
+                    <!-- Populated Result state -->
+                    <div id="result-content" style="display: none; width: 100%; text-align: center;">
+                        <span class="badge badge-success" style="margin-bottom: 12px;" id="result-status">Quote approved</span>
+
+                        <h4 style="font-size: 20px; font-weight: 600;" id="result-vehicle-name">Mercedes Atego</h4>
+                        
+                        <div class="result-cost" id="result-cost-value">468.00 ₼</div>
+                        
+                        <div style="text-align: left; background: rgba(0,0,0,0.1); padding: 16px; border-radius: 10px; border: 1px solid var(--border); font-size: 13px; margin-top: 16px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: var(--text-muted)">Route Corridor:</span>
+                                <span style="font-weight: 600;" id="result-route">Absheron ➔ Ganja</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: var(--text-muted)">Road Distance:</span>
+                                <span style="font-weight: 600;" id="result-distance">362 km</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: var(--text-muted)">Historical Delay Risk:</span>
+                                <span style="font-weight: 600; color: var(--success);" id="result-delay">5.2%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-muted)">Volume weight:</span>
+                                <span style="font-weight: 600;" id="result-desi">430.0 Desi</span>
+                            </div>
+                        </div>
+
+                        <!-- Consolidation Recommendation Box -->
+                        <div class="card" id="consolidation-box" style="margin-top: 16px; border-color: rgba(245, 158, 11, 0.25); background: rgba(245, 158, 11, 0.02); text-align: left; padding: 14px; display: none;">
+                            <h4 style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--warning); display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                                <i data-lucide="merge" style="width: 14px; height: 14px;"></i> Consolidation Alert
+                            </h4>
+                            <div id="consolidation-content" style="font-size: 11.5px; line-height: 1.4; color: var(--text-main);">
+                                Detecting consolidation options...
+                            </div>
+                        </div>
+
+                        <!-- AI Dispatch Insights -->
+                        <div class="card" style="margin-top: 16px; border-color: rgba(124, 58, 237, 0.25); background: rgba(124, 58, 237, 0.02); text-align: left; padding: 14px;">
+                            <h4 style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--primary-lighter); display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                                <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> AI Dispatch Insights
+                            </h4>
+                            <div id="ai-insights-content" style="font-size: 12px; line-height: 1.5; color: var(--text-main);">
+                                Generating AI routing recommendations...
+                            </div>
+                        </div>
+
+                        <button class="btn btn-outline" style="width: 100%; margin-top: 18px;" id="dispatch-book-btn">
+                            <i data-lucide="check"></i>
+                            <span>Confirm dispatch booking</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Historical shipment table -->
+            <section class="card animated-fade-in" style="animation-delay: 200ms;">
+                <div class="card-header" style="margin-bottom: 16px;">
+                    <h3 class="card-title">Marketplace Shipment Logs</h3>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="filter-row">
+                    <div class="search-wrapper">
+                        <i data-lucide="search" class="search-icon" style="width: 18px; height: 18px;"></i>
+                        <input type="text" id="log-search" class="form-control search-input" placeholder="Search by destination...">
+                    </div>
+                    
+                    <select id="filter-status" class="form-control" style="width: auto; min-width: 150px;">
+                        <option value="all">All statuses</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="in-transit">In-Transit</option>
+                        <option value="pending">Pending</option>
+                        <option value="delayed">Delayed</option>
+                    </select>
+
+                    <select id="filter-vehicle" class="form-control" style="width: auto; min-width: 150px;">
+                        <option value="all">All vehicles</option>
+                        <option value="TIR">TIR (semi)</option>
+                        <option value="Mercedes Atego">Mercedes Atego</option>
+                        <option value="Isuzu">Isuzu / Gazelle</option>
+                        <option value="avtomobil">avtomobil</option>
+                    </select>
+                </div>
+
+                <!-- Historical Table -->
+                <div class="table-container">
+                    <table class="custom-table" id="shipment-logs-table">
+                        <thead>
+                            <tr>
+                                <th>Shipment ID</th>
+                                <th>Destination</th>
+                                <th>Date</th>
+                                <th>Vehicle Allocation</th>
+                                <th>Cost</th>
+                                <th>Delay Profile</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-tbody">
+                            <!-- populated by js -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination helper -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 13px;">
+                    <span style="color: var(--text-muted)" id="page-indicator">Showing 1-5 of 12 shipments</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" disabled id="btn-prev">Previous</button>
+                        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" id="btn-next">Next</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- AI SLIDE-OVER PANEL (Full height drawer + backdrop blur) -->
+    <div class="ai-backdrop-overlay" id="ai-overlay"></div>
+    <div class="ai-slide-panel" id="ai-panel">
+        <div class="ai-panel-header">
+            <div class="ai-panel-title">
+                <i data-lucide="bot" style="color: var(--primary);"></i>
+                <span>ArtiLogix AI Marketplace Advisor</span>
+            </div>
+            <button class="ai-close-btn" id="ai-panel-close">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <!-- Chat history messages -->
+        <div class="ai-chat-messages" id="ai-messages">
+            <div class="chat-msg assistant">
+                Welcome to the Marketplace portal! Ask me anything regarding order volumes, transit costs, or route delays.
+            </div>
+        </div>
+
+        <!-- Suggested quick prompts -->
+        <div class="ai-suggested-prompts">
+            <button class="suggested-prompt-btn" data-prompt="Show weekly forecast for Ganja">Ganja Forecast</button>
+            <button class="suggested-prompt-btn" data-prompt="What vehicle should I send to Lankaran?">Lankaran Dispatch</button>
+            <button class="suggested-prompt-btn" data-prompt="What if demand in Sheki increases by 25%?">Sheki +25% Scenario</button>
+            <button class="suggested-prompt-btn" data-prompt="Show delay rate history for Baku to Ganja">Baku-Ganja delays</button>
+        </div>
+
+        <!-- Inputs container -->
+        <div class="ai-panel-input-container">
+            <input type="text" id="ai-chat-input" class="form-control" placeholder="Ask about marketplace logistics..." style="flex: 1;">
+            <button class="btn btn-primary" id="ai-chat-send" style="padding: 12px;">
+                <i data-lucide="send"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Bottom-Right Actions Container -->
+    <div class="floating-actions-container">
+        <button class="floating-btn chat-toggle-btn" id="chat-toggle" title="Open AI Assistant">
+            <i data-lucide="message-square"></i>
+        </button>
+    </div>
+
+    <!-- Common App Script -->
+    <script src="js/app.js?v=1.2"></script>
+    <!-- Marketplace Script -->
+    <script src="js/marketplace.js?v=1.2"></script>
+</body>
+</html>
