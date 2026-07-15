@@ -1,4 +1,5 @@
 import os
+import json
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
@@ -14,10 +15,17 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 _sessions: dict[str, list[dict]] = {}
 
 
-def _get_history(session_id: str) -> list[dict]:
-    if session_id not in _sessions:
-        _sessions[session_id] = []
-    return _sessions[session_id]
+def _scoped_key(email: str, session_id: str) -> str:
+    """Namespaces session_id by user email so two different logged-in
+    users can never read/overwrite each other's chat history just by
+    picking the same session_id (e.g. both using 'default' or 't1')."""
+    return f"{email}:{session_id}"
+
+
+def _get_history(key: str) -> list[dict]:
+    if key not in _sessions:
+        _sessions[key] = []
+    return _sessions[key]
 
 
 class ChatRequest(BaseModel):
@@ -33,8 +41,9 @@ def send_message(
     # Role now comes from the caller's JWT (set at /auth/token login),
     # not hardcoded — marketplace users get the marketplace prompt,
     # logistics users get the logistics prompt.
-    role    = current_user["role"]
-    history = _get_history(req.session_id)
+    role = current_user["role"]
+    key  = _scoped_key(current_user["email"], req.session_id)
+    history = _get_history(key)
 
     answer, updated = chat(
         user_message = req.message,
@@ -42,7 +51,7 @@ def send_message(
         role         = role,
         history      = history,
     )
-    _sessions[req.session_id] = updated
+    _sessions[key] = updated
 
     return {
         "response"  : answer,
@@ -61,8 +70,9 @@ def stream_message(
     # Authorization header, so the token is passed as a query param here
     # instead and verified the same way as the header-based flow.
     current_user = verify_token_query(token)
-    role    = current_user["role"]
-    history = _get_history(session_id)
+    role = current_user["role"]
+    key  = _scoped_key(current_user["email"], session_id)
+    history = _get_history(key)
 
     def event_stream():
         for token_chunk in stream_chat(
@@ -71,8 +81,11 @@ def stream_message(
             role         = role,
             history      = history,
         ):
-            yield f"data: {token_chunk}\n\n"
-        yield "data: [DONE]\n\n"
+            # Frontend does JSON.parse(event.data) expecting {"content": "..."},
+            # so every chunk must be JSON, not a raw text token.
+            payload = json.dumps({"content": token_chunk})
+            yield f"data: {payload}\n\n"
+        yield f"data: {json.dumps({'done': True})}\n\n"
 
     return StreamingResponse(
         event_stream(),
@@ -90,5 +103,6 @@ def clear_session(
     session_id  : str,
     current_user: dict = Depends(verify_token),
 ):
-    _sessions.pop(session_id, None)
+    key = _scoped_key(current_user["email"], session_id)
+    _sessions.pop(key, None)
     return {"status": "cleared", "session_id": session_id}

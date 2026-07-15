@@ -152,23 +152,31 @@ def chat(
     history.append({"role": "user", "content": user_message})
 
     contents = _history_to_contents(history)
-    response = client.models.generate_content(
-        model=model, contents=contents, config=_build_config(system_prompt)
-    )
-
-    fc_part = _first_function_call_part(response)
-    if fc_part:
-        fc = fc_part.function_call
-        history = _run_tool_call(fc, fc_part.thought_signature, history, system_prompt, model)
-
-        contents = _history_to_contents(history)
-        final = client.models.generate_content(
+    try:
+        response = client.models.generate_content(
             model=model, contents=contents, config=_build_config(system_prompt)
         )
-        answer = final.text or ""
-    else:
-        print("[DEBUG] No tool called — model answered directly.")
-        answer = response.text or ""
+
+        fc_part = _first_function_call_part(response)
+        if fc_part:
+            fc = fc_part.function_call
+            history = _run_tool_call(fc, fc_part.thought_signature, history, system_prompt, model)
+
+            contents = _history_to_contents(history)
+            final = client.models.generate_content(
+                model=model, contents=contents, config=_build_config(system_prompt)
+            )
+            answer = final.text or ""
+        else:
+            print("[DEBUG] No tool called — model answered directly.")
+            answer = response.text or ""
+    except Exception as e:
+        print(f"[LLM ERROR] Quota or API error in chat: {e}")
+        answer = (
+            "The AI Assistant (Gemini) has exceeded its daily free API quota limit. "
+            "However, the rule-based Freight Estimator is fully functional. Please use the "
+            "calculator panel on the left to estimate costs, select optimal vehicles, and book dispatches."
+        )
 
     history.append({"role": "assistant", "content": answer})
 
@@ -189,36 +197,47 @@ def stream_chat(
 
     contents = _history_to_contents(history)
 
-    # Probe (non-streaming) first, same pattern as before, so we can detect
-    # a function call and run it before streaming the final answer.
-    probe = client.models.generate_content(
-        model=model, contents=contents, config=_build_config(system_prompt)
-    )
-
-    fc_part = _first_function_call_part(probe)
-    if fc_part:
-        yield "Calculating..."
-
-        fc = fc_part.function_call
-        history = _run_tool_call(fc, fc_part.thought_signature, history, system_prompt, model)
-
-        contents = _history_to_contents(history)
-        full = ""
-        for chunk in client.models.generate_content_stream(
+    try:
+        # Probe (non-streaming) first, same pattern as before, so we can detect
+        # a function call and run it before streaming the final answer.
+        probe = client.models.generate_content(
             model=model, contents=contents, config=_build_config(system_prompt)
-        ):
-            token = chunk.text or ""
-            if token:
-                full += token
-                yield token
+        )
 
-        history.append({"role": "assistant", "content": full})
-    else:
-        answer = probe.text or ""
-        for word in answer.split(" "):
-            if word:
-                yield word + " "
-        history.append({"role": "assistant", "content": answer})
+        fc_part = _first_function_call_part(probe)
+        if fc_part:
+            yield "Calculating..."
+
+            fc = fc_part.function_call
+            history = _run_tool_call(fc, fc_part.thought_signature, history, system_prompt, model)
+
+            contents = _history_to_contents(history)
+            full = ""
+            for chunk in client.models.generate_content_stream(
+                model=model, contents=contents, config=_build_config(system_prompt)
+            ):
+                token = chunk.text or ""
+                if token:
+                    full += token
+                    yield token
+
+            history.append({"role": "assistant", "content": full})
+        else:
+            answer = probe.text or ""
+            for word in answer.split(" "):
+                if word:
+                    yield word + " "
+            history.append({"role": "assistant", "content": answer})
+    except Exception as e:
+        print(f"[LLM ERROR] Quota or API error in stream_chat: {e}")
+        fallback_msg = (
+            "The AI Assistant (Gemini) has exceeded its daily free API quota limit. "
+            "However, the rule-based Freight Estimator is fully functional. Please use the "
+            "calculator panel on the left to estimate costs, select optimal vehicles, and book dispatches."
+        )
+        for word in fallback_msg.split(" "):
+            yield word + " "
+        history.append({"role": "assistant", "content": fallback_msg})
 
     if len(history) > MAX_HISTORY:
         history[:] = history[-MAX_HISTORY:]

@@ -135,6 +135,64 @@ TOOL_SPECS = [
             "required": ["origin", "destination"],
         },
     },
+    {
+        "name": "get_warehouse_assignment",
+        "description": (
+            "Predicts which warehouse will fulfill an order for a given "
+            "region, item count, and delivery type. Call this when the "
+            "user asks which warehouse handles an order."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "region": {
+                    "type": "string",
+                    "description": "Region name.",
+                    "enum": REGIONS,
+                },
+                "item_count": {
+                    "type": "integer",
+                    "description": "Number of items in the order.",
+                },
+                "delivery_type": {
+                    "type": "string",
+                    "description": "Delivery type, e.g. 'standard' or 'express'.",
+                },
+                "order_hour": {
+                    "type": "integer",
+                    "description": "Hour of day the order was placed (0-23). Default 12.",
+                },
+            },
+            "required": ["region", "item_count", "delivery_type"],
+        },
+    },
+    {
+        "name": "get_store_assignment",
+        "description": (
+            "Predicts which store will fulfill/receive an order for a "
+            "given region, item count, and delivery type. Call this when "
+            "the user asks which store handles an order."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "region": {
+                    "type": "string",
+                    "description": "Region name.",
+                    "enum": REGIONS,
+                },
+                "item_count": {
+                    "type": "integer",
+                    "description": "Number of items in the order.",
+                },
+                "delivery_type": {
+                    "type": "string",
+                    "description": "Delivery type, e.g. 'standard' or 'express'.",
+                },
+            },
+            "required": ["region", "item_count", "delivery_type"],
+        },
+    },
 ]
 
 # Which FastAPI endpoint each tool maps to. Provider-agnostic — unchanged
@@ -144,6 +202,8 @@ TOOL_ENDPOINT_MAP = {
     "get_dispatch_plan": "/predict/dispatch",
     "get_scenario": "/predict/scenario",
     "get_route_history": "/predict/route-history",
+    "get_warehouse_assignment": "/predict/warehouse",
+    "get_store_assignment": "/predict/store",
 }
 
 # Tools whose FastAPI endpoint is declared with @router.post (see dispatch.py).
