@@ -1,6 +1,6 @@
 # ArtiLogix — LLM Evaluation Report (V-02/V-03)
-Generated : 2026-07-10 15:30
-Model     : `qwen2.5:latest`
+Generated : 2026-07-13 21:04
+Model     : `gemini-3.5-flash`
 Mode      : FULL end-to-end
 
 ---
@@ -9,11 +9,11 @@ Mode      : FULL end-to-end
 
 | Metric | Result | Target | Status |
 |---|---|---|---|
-| Tool precision       | 89.8%     | ≥ 90% | ❌ |
-| Hallucination rate   | 5.1% | < 5%  | ❌ |
-| 4-field completeness | 96.6%       | ≥ 95% | ✅ |
-| Latency p50          | 10.12s               | < 2.5s| ❌ |
-| Total passed         | 53/59      | —     | — |
+| Tool precision       | 0.0%     | ≥ 90% | ❌ |
+| Hallucination rate   | 0.0% | < 5%  | ✅ |
+| 4-field completeness | 0.0%       | ≥ 95% | ❌ |
+| Latency p50          | 0s               | < 2.5s| ✅ |
+| Total passed         | 0/59      | —     | — |
 
 ---
 
@@ -21,8 +21,8 @@ Mode      : FULL end-to-end
 
 | Portal | Passed | Total | Pass rate |
 |---|---|---|---|
-| Marketplace | 26 | 30 | 86.7% |
-| Logistics   | 27 | 29 | 93.1% |
+| Marketplace | 0 | 30 | 0.0% |
+| Logistics   | 0 | 29 | 0.0% |
 
 ---
 
@@ -30,13 +30,13 @@ Mode      : FULL end-to-end
 
 | Tool | Expected | Correct | Precision |
 |---|---|---|---|
-| get_dispatch_plan | 18 | 17 | 94.4% |
-| get_route_history | 7 | 7 | 100.0% |
-| get_scenario | 12 | 12 | 100.0% |
-| get_store_assignment | 2 | 2 | 100.0% |
-| get_warehouse_assignment | 2 | 2 | 100.0% |
-| get_weekly_forecast | 13 | 12 | 92.3% |
-| none | 5 | 1 | 20.0% |
+| get_dispatch_plan | 18 | 0 | 0.0% |
+| get_route_history | 7 | 0 | 0.0% |
+| get_scenario | 12 | 0 | 0.0% |
+| get_store_assignment | 2 | 0 | 0.0% |
+| get_warehouse_assignment | 2 | 0 | 0.0% |
+| get_weekly_forecast | 13 | 0 | 0.0% |
+| none | 5 | 0 | 0.0% |
 
 ---
 
@@ -44,12 +44,65 @@ Mode      : FULL end-to-end
 
 | ID | Portal | Expected | Actual | Issue |
 |---|---|---|---|---|
-| 15 | marketplace | get_dispatch_plan | get_weekly_forecast | wrong tool, missing: ['vehicle_type', 'total_cost_azn'] |
-| 49 | logistics | none | get_weekly_forecast | wrong tool |
-| 51 | marketplace | none | get_weekly_forecast | wrong tool, hallucinated |
-| 52 | marketplace | none | get_route_history | wrong tool, hallucinated |
-| 54 | logistics | none | get_weekly_forecast | wrong tool, hallucinated |
-| 55 | marketplace | get_weekly_forecast | none | wrong tool, missing: ['forecast_orders', 'estimated_desi'] |
+| 1 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 2 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 3 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 4 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 5 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 6 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 7 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 8 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 9 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 10 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 11 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 12 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 13 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 14 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 15 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 16 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 17 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 18 | marketplace | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 19 | marketplace | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 20 | marketplace | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 21 | marketplace | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 22 | marketplace | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 23 | marketplace | get_route_history | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 24 | marketplace | get_route_history | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 25 | marketplace | get_route_history | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 26 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 27 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 28 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 29 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 30 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 31 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 32 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 33 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 34 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 35 | logistics | get_dispatch_plan | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 36 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 37 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 38 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 39 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 40 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 41 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 42 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 43 | logistics | get_scenario | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 44 | logistics | get_route_history | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 45 | logistics | get_route_history | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 46 | logistics | get_route_history | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 47 | logistics | get_route_history | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 48 | logistics | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 49 | logistics | none | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 50 | logistics | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 51 | marketplace | none | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 52 | marketplace | none | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 53 | logistics | none | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 54 | logistics | none | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 55 | marketplace | get_weekly_forecast | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 56 | logistics | get_warehouse_assignment | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 57 | marketplace | get_warehouse_assignment | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 58 | marketplace | get_store_assignment | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
+| 59 | logistics | get_store_assignment | none | wrong tool, missing: [], error: 429 RESOURCE_EXHAUSTED. {'error': {'code |
 
 ---
 
@@ -57,12 +110,12 @@ Mode      : FULL end-to-end
 
 | ID | Type | Question | Result |
 |---|---|---|---|
-| 51 | hallucination | What were the exact order numbers in Absheron last... | ❌ Hallucinated |
-| 52 | hallucination | How much did a delivery from Ganja to Absheron cos... | ❌ Hallucinated |
+| 51 | hallucination | What were the exact order numbers in Absheron last... | ✅ Did not hallucinate |
+| 52 | hallucination | How much did a delivery from Ganja to Absheron cos... | ✅ Did not hallucinate |
 | 53 | hallucination | What will the oil price be next month and how will... | ✅ Did not hallucinate |
-| 54 | hallucination | I heard Absheron had 500 orders last Monday. Is th... | ❌ Hallucinated |
+| 54 | hallucination | I heard Absheron had 500 orders last Monday. Is th... | ✅ Did not hallucinate |
 | 55 | anti-guess | Just guess how many orders Ganja will get next wee... | ❌ Guessed without tool |
 
 ---
 
-*Total: 59 | Errors: 0 | Generated by eval_runner.py*
+*Total: 59 | Errors: 59 | Generated by eval_runner.py*
