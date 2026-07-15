@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtiLogix - Driver Telemetry</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Mobile Device Frame styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0b0b0e;
+            min-height: 100vh;
+        }
+
+        .driver-mobile-frame {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 890px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            border-radius: 36px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Phone notch */
+        .notch {
+            height: 24px;
+            background-color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 11px;
+            font-family: var(--font-sans);
+            color: #fff;
+            z-index: 1000;
+        }
+
+        .notch-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* Banner Status */
+        .network-banner {
+            background-color: var(--success);
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .network-banner.offline {
+            background-color: var(--warning);
+            color: var(--text-inverse);
+        }
+
+        /* Driver Content */
+        .driver-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 90px; /* space for bottom tabs */
+        }
+
+        /* Small GPS mini map */
+        .gps-widget {
+            height: 180px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gps-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .gps-stats-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+        }
+
+        /* Driver Timeline Steps */
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .timeline-step {
+            display: flex;
+            gap: 16px;
+            position: relative;
+        }
+
+        .timeline-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--border);
+            top: 24px;
+            left: 11px;
+            bottom: -16px;
+        }
+
+        .timeline-step.completed:not(:last-child)::after {
+            background-color: var(--success);
+        }
+
+        .timeline-bullet {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--bg-input);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: all var(--transition-fast);
+        }
+
+        .timeline-step.completed .timeline-bullet {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .timeline-step.active .timeline-bullet {
+            border-color: var(--primary);
+            background-color: var(--primary-glow);
+            animation: pulse-ring-bullet 1.5s infinite;
+        }
+
+        @keyframes pulse-ring-bullet {
+            0% { box-shadow: 0 0 0 0 rgba(124,58,237,0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(124,58,237,0); }
+            100% { box-shadow: 0 0 0 0 rgba(124,58,237,0); }
+        }
+
+        .timeline-info {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .timeline-time {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .driver-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        /* Nav Bar inside mobile frame */
+        .mobile-frame-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            padding-bottom: 8px; /* buffer for phone swipe bars */
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary-lighter);
+        }
+    </style>
+</head>
+<body>
+    <div class="driver-mobile-frame">
+        <!-- Status Bar Simulation -->
+        <div class="notch">
+            <span id="phone-time">11:15</span>
+            <div class="notch-icons">
+                <i data-lucide="wifi" style="width: 12px; height: 12px;" id="phone-wifi"></i>
+                <i data-lucide="battery" style="width: 14px; height: 14px;"></i>
+            </div>
+        </div>
+
+        <!-- Phone Header with Sidebar trigger -->
+        <div class="phone-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background-color: var(--bg-card); border-bottom: 1px solid var(--border); z-index: 100;">
+            <button id="mobile-sidebar-trigger" style="background: transparent; border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px; font-weight: bold;" title="Open Operator Profile">
+                <i data-lucide="chevron-right" style="width: 20px; height: 20px;"></i>
+            </button>
+            <span style="font-weight: 700; font-size: 14px; letter-spacing: -0.3px;">Driver Transit</span>
+            <div style="width: 24px;"></div> <!-- visual spacer -->
+        </div>
+
+        <!-- Mobile Sidebar Left Drawer Overlay -->
+        <div class="mobile-drawer-overlay" id="mobile-drawer-overlay"></div>
+        <div class="mobile-left-drawer" id="mobile-left-drawer">
+            <div class="mobile-drawer-header">
+                <span style="font-weight: 700; font-size: 14px;">Operator Profile</span>
+                <button id="mobile-drawer-close" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="chevron-left" style="width: 18px; height: 18px;"></i>
+                </button>
+            </div>
+            
+            <div class="drawer-profile-card" style="padding: 14px; border: 1px solid var(--border); border-radius: var(--border-radius); background: rgba(255,255,255,0.01); display: flex; flex-direction: column; gap: 8px;">
+                <div class="drawer-profile-title" style="font-weight: 600; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Active Operator</div>
+                
+                <div class="drawer-profile-field">
+                    <span class="drawer-profile-label" style="font-size: 9px; color: var(--text-muted);">Driver ID</span>
+                    <span class="drawer-profile-value" id="drv-display-id" style="font-family: var(--font-mono); font-weight: 700; font-size: 13px;">DRV-1000</span>
+                </div>
+
+                <div class="drawer-profile-field">
+                    <label class="drawer-profile-label" for="drv-input-name" style="font-size: 9px; color: var(--text-muted);">Driver Name</label>
+                    <input type="text" id="drv-input-name" class="form-control" style="font-size: 12px; padding: 6px 10px; height: 32px; background: var(--bg-input);">
+                </div>
+                
+                <div class="drawer-profile-field">
+                    <label class="drawer-profile-label" for="drv-input-phone" style="font-size: 9px; color: var(--text-muted);">Phone Contact</label>
+                    <input type="text" id="drv-input-phone" class="form-control" style="font-size: 12px; padding: 6px 10px; height: 32px; background: var(--bg-input);">
+                </div>
+                
+                <div class="drawer-profile-field">
+                    <label class="drawer-profile-label" for="drv-input-vehicle" style="font-size: 9px; color: var(--text-muted);">Vehicle Type</label>
+                    <input type="text" id="drv-input-vehicle" class="form-control" style="font-size: 12px; padding: 6px 10px; height: 32px; background: var(--bg-input);">
+                </div>
+                
+                <div class="drawer-profile-field">
+                    <label class="drawer-profile-label" for="drv-input-plate" style="font-size: 9px; color: var(--text-muted);">License Plate</label>
+                    <input type="text" id="drv-input-plate" class="form-control" style="font-size: 12px; padding: 6px 10px; height: 32px; background: var(--bg-input);">
+                </div>
+
+                <div class="drawer-profile-field" style="margin-bottom: 4px;">
+                    <label class="drawer-profile-label" for="drv-input-password" style="font-size: 9px; color: var(--text-muted);">New Password</label>
+                    <input type="password" id="drv-input-password" class="form-control" placeholder="Update password..." style="font-size: 12px; padding: 6px 10px; height: 32px; background: var(--bg-input);">
+                </div>
+
+                <button class="btn btn-primary" id="btn-save-profile" style="width: 100%; font-size: 12px; height: 36px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <i data-lucide="save" style="width: 14px; height: 14px;"></i>
+                    <span>Save Changes</span>
+                </button>
+            </div>
+            
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border); padding-top: 16px;">
+                <span class="drawer-profile-label" style="text-transform: uppercase; font-size: 9px; font-weight: 600; letter-spacing: 0.5px;">System Theme</span>
+                <button class="btn btn-secondary" id="theme-toggle" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; padding: 6px; height: 36px;">
+                    <i data-lucide="sun" style="width: 14px; height: 14px;"></i>
+                    <span>Toggle Light/Dark</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="driver-content">
+            <!-- Active Shipment Card -->
+            <div class="card" style="padding: 16px;" id="active-shipment-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <span class="badge badge-info" style="font-size: 9px; margin-bottom: 6px;" id="shipment-id-badge">DISPATCH: NO ACTIVE TRIP</span>
+                        <h3 style="font-size: 16px; font-weight: 700;" id="shipment-route-header">No cargo assigned</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;" id="shipment-vehicle-desc">Assigned Vehicle: <b>None</b></p>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--primary-lighter);" id="shipment-cost-val">₼ 0.00</span>
+                </div>
+            </div>
+
+
+
+            <!-- Task Timeline -->
+            <div class="card" style="padding: 16px;">
+                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">Route Actions Checklist</h4>
+                
+                <div class="timeline-container">
+                    <div class="timeline-step completed" id="step-0">
+                        <div class="timeline-bullet"><i data-lucide="check" style="width:12px; height:12px"></i></div>
+                        <div class="timeline-info">
+                            <div class="timeline-title">Weight & Loading Check</div>
+                            <div class="timeline-time" id="step-0-time">08:30 AM</div>
+                        </div>
+                    </div>
+                    <div class="timeline-step completed" id="step-1">
+                        <div class="timeline-bullet"><i data-lucide="check" style="width:12px; height:12px"></i></div>
+                        <div class="timeline-info">
+                            <div class="timeline-title">Departed Absheron Hub</div>
+                            <div class="timeline-time" id="step-1-time">09:15 AM</div>
+                        </div>
+                    </div>
+                    <div class="timeline-step active" id="step-2">
+                        <div class="timeline-bullet"></div>
+                        <div class="timeline-info">
+                            <div class="timeline-title" id="step-2-title">Refueling & Break: Yevlakh</div>
+                            <div class="timeline-time" id="step-2-time">In-Transit</div>
+                        </div>
+                    </div>
+                    <div class="timeline-step" id="step-3">
+                        <div class="timeline-bullet"></div>
+                        <div class="timeline-info">
+                            <div class="timeline-title" id="step-3-title">Arrive Ganja Hub</div>
+                            <div class="timeline-time" id="step-3-time">Pending</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Phone Navigation bar -->
+        <nav class="mobile-frame-nav">
+            <a onclick="window.history.back()" class="mobile-nav-item">
+                <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+                <span>Back</span>
+            </a>
+            <a href="driver.html" class="mobile-nav-item active">
+                <i data-lucide="navigation" style="width: 20px; height: 20px;"></i>
+                <span>Navigate</span>
+            </a>
+            <a href="login.html" class="mobile-nav-item">
+                <i data-lucide="log-out" style="width: 20px; height: 20px;"></i>
+                <span>Exit Portal</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/app.js?v=1.2"></script>
+    <script src="js/driver.js?v=1.2"></script>
+</body>
+</html>
