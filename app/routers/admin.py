@@ -62,7 +62,7 @@ def remove_user(
     email: str,
     current_user: dict = Depends(require_role("admin")),
 ):
-    if email == current_user.get("sub"):
+    if email == current_user.get("email"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Administrators cannot delete their own accounts."
