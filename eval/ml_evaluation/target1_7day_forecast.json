@@ -1,0 +1,422 @@
+[
+  {
+    "region": "Absheron",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 23
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 25
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 26
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 24
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 22
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 22
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 22
+      }
+    ],
+    "total_7day_orders": 164
+  },
+  {
+    "region": "Ganja",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 8
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 9
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 9
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 9
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 8
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 8
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 8
+      }
+    ],
+    "total_7day_orders": 59
+  },
+  {
+    "region": "Kalbajar",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 4
+      }
+    ],
+    "total_7day_orders": 28
+  },
+  {
+    "region": "Khachmaz",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 5
+      }
+    ],
+    "total_7day_orders": 35
+  },
+  {
+    "region": "Khankendi",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 5
+      }
+    ],
+    "total_7day_orders": 29
+  },
+  {
+    "region": "Lankaran",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 5
+      }
+    ],
+    "total_7day_orders": 35
+  },
+  {
+    "region": "Nakhchivan",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 7
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 8
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 8
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 8
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 7
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 7
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 7
+      }
+    ],
+    "total_7day_orders": 52
+  },
+  {
+    "region": "Qazakh",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 6
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 6
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 5
+      }
+    ],
+    "total_7day_orders": 37
+  },
+  {
+    "region": "Sheki",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 5
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 7
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 6
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 6
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 6
+      }
+    ],
+    "total_7day_orders": 40
+  },
+  {
+    "region": "Yevlakh",
+    "model": "XGBoost_Tuned",
+    "forecast": [
+      {
+        "date": "2026-06-13",
+        "day_of_week": "Sat",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-14",
+        "day_of_week": "Sun",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-15",
+        "day_of_week": "Mon",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-16",
+        "day_of_week": "Tue",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-17",
+        "day_of_week": "Wed",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-18",
+        "day_of_week": "Thu",
+        "orders": 4
+      },
+      {
+        "date": "2026-06-19",
+        "day_of_week": "Fri",
+        "orders": 4
+      }
+    ],
+    "total_7day_orders": 28
+  }
+]
