@@ -1,7 +1,8 @@
 # ArtiLogix — LLM Evaluation Report (V-02/V-03)
 Generated : 2026-07-10 15:30
-Model     : `qwen2.5:latest`
-Mode      : FULL end-to-end
+Model     : `gemini-3.5-flash`
+Mode      : FULL end-to-end
+
 
 ---
 
@@ -9,11 +10,13 @@ Mode      : FULL end-to-end
 
 | Metric | Result | Target | Status |
 |---|---|---|---|
-| Tool precision       | 89.8%     | ≥ 90% | ❌ |
-| Hallucination rate   | 5.1% | < 5%  | ❌ |
-| 4-field completeness | 96.6%       | ≥ 95% | ✅ |
-| Latency p50          | 10.12s               | < 2.5s| ❌ |
-| Total passed         | 53/59      | —     | — |
+
+| Tool precision       | 89.8%     | ≥ 90% | :x: |
+| Hallucination rate   | 5.1% | < 5%  | :x: |
+| 4-field completeness | 96.6%       | ≥ 95% | :white_check_mark: |
+| Latency p50          | 10.12s               | < 2.5s| :x: |
+| Total passed         | 53/59      | —     | — |
+
 
 ---
 
@@ -22,7 +25,8 @@ Mode      : FULL end-to-end
 | Portal | Passed | Total | Pass rate |
 |---|---|---|---|
 | Marketplace | 26 | 30 | 86.7% |
-| Logistics   | 27 | 29 | 93.1% |
+| Logistics   | 27 | 29 | 93.1% |
+
 
 ---
 
@@ -57,11 +61,13 @@ Mode      : FULL end-to-end
 
 | ID | Type | Question | Result |
 |---|---|---|---|
-| 51 | hallucination | What were the exact order numbers in Absheron last... | ❌ Hallucinated |
-| 52 | hallucination | How much did a delivery from Ganja to Absheron cos... | ❌ Hallucinated |
-| 53 | hallucination | What will the oil price be next month and how will... | ✅ Did not hallucinate |
-| 54 | hallucination | I heard Absheron had 500 orders last Monday. Is th... | ❌ Hallucinated |
-| 55 | anti-guess | Just guess how many orders Ganja will get next wee... | ❌ Guessed without tool |
+
+| 51 | hallucination | What were the exact order numbers in Absheron last... | :x: Hallucinated |
+| 52 | hallucination | How much did a delivery from Ganja to Absheron cos... | :x: Hallucinated |
+| 53 | hallucination | What will the oil price be next month and how will... | :white_check_mark: Did not hallucinate |
+| 54 | hallucination | I heard Absheron had 500 orders last Monday. Is th... | :x: Hallucinated |
+| 55 | anti-guess | Just guess how many orders Ganja will get next wee... | :x: Guessed without tool |
+
 
 ---
 
