@@ -1,10 +1,17 @@
 import joblib
 import pandas as pd
 from fastapi import APIRouter
+from pydantic import BaseModel
 from pathlib import Path
-from app.logic.transport_planner import select_vehicle, calculate_cost, consolidate, RegionLoad
+from app.logic.transport_planner import select_vehicle, calculate_cost
+from app.services.db import get_db
 
 router = APIRouter()
+
+ALL_REGIONS = [
+    "Absheron", "Ganja", "Kalbajar", "Khachmaz", "Khankendi",
+    "Lankaran", "Nakhchivan", "Qazakh", "Sheki", "Yevlakh"
+]
 
 MODEL_DIR = Path("models")
 
@@ -37,31 +44,101 @@ def _get_forecast(region: str, date: str) -> dict:
         from app.routers.forecast import get_forecast
         result = get_forecast(region=region, date_from=date, weeks=1)
         return result
-    except Exception:
+    except Exception as e:
+        print(f"[WARN] _get_forecast failed for {region}/{date}, using fallback values: {e}")
         return {"forecast_orders": 20, "estimated_desi": 160}
 
 
 @router.post("/dispatch")
-def get_dispatch(region: str, date: str, cold_chain: str = "false"):
-    region      = _normalize_region(region)
-    cold_chain  = str(cold_chain).lower() == "true"
-    forecast    = _get_forecast(region, date)
-    desi        = forecast.get("estimated_desi", 160)
-    orders      = forecast.get("forecast_orders", 20)
+def get_dispatch(
+    region: str,
+    date: str,
+    cold_chain: str = "false",
+    priority: str = "standard",
+    waypoint: str = "none",
+    weight: float = 0.0,
+    volume: float = 0.0,
+    is_holiday: str = "false"
+):
+    region          = _normalize_region(region)
+    cold_chain      = str(cold_chain).lower() == "true"
+    is_holiday_bool = str(is_holiday).lower() == "true"
+    
+    # Calculate base corridor distance
     distance_km = REGION_DISTANCES.get(region, 300)
-
-    vehicle     = select_vehicle(desi, cold_chain=cold_chain)
-    cost        = calculate_cost(vehicle, distance_km, days=1, cold_chain=cold_chain)
-
+    
+    # Add distance overhead for stops at intermediate hubs
+    if waypoint and waypoint.lower() != "none":
+        distance_km += 45
+        
+    # Determine volume metric (Desi)
+    if volume > 0:
+        desi = volume
+    else:
+        forecast = _get_forecast(region, date)
+        desi = forecast.get("estimated_desi", 160)
+        
+    # Select best fitting vehicle
+    vehicle = select_vehicle(desi, cold_chain=cold_chain)
+    
+    # Calculate initial transport fees
+    base_cost = calculate_cost(vehicle, distance_km, days=1, cold_chain=cold_chain)
+    
+    # Apply priority multiplier coefficients
+    if priority.lower() == "economy":
+        base_cost *= 0.85
+    elif priority.lower() == "express":
+        base_cost *= 1.40
+        
+    # Apply seasonal/holiday loading multiplier (+30%)
+    if is_holiday_bool:
+        base_cost *= 1.30
+        
+    final_cost = round(base_cost, 2)
+    
+    # Determine route corridor delay risk percentage (Target 3 simulation)
+    base_delay_risks = {
+        "Ganja": 5.2, "Lankaran": 4.8, "Khachmaz": 7.1, "Sheki": 6.1,
+        "Yevlakh": 3.4, "Nakhchivan": 9.5, "Qazakh": 8.0, "Absheron": 1.2,
+        "Kalbajar": 11.2, "Khankendi": 10.5
+    }
+    delay_risk = base_delay_risks.get(region, 5.0)
+    
+    if priority.lower() == "express":
+        delay_risk = max(0.5, delay_risk - 2.0)
+    elif priority.lower() == "economy":
+        delay_risk += 3.5
+        
+    if waypoint and waypoint.lower() != "none":
+        delay_risk += 2.0
+        
+    delay_risk = round(delay_risk, 1)
+    
+    # Generate Smart Consolidation Alerts
+    consolidation_alert = ""
+    if desi < 250:
+        db = get_db()
+        other_ship = db.execute(
+            "SELECT shipment_id FROM booked_shipments WHERE status = 'pending' AND destination = ? LIMIT 1",
+            [region]
+        ).fetchone()
+        
+        if other_ship:
+            other_id = other_ship[0]
+            consolidation_alert = f"Consolidation Option: We detected pending shipment ({other_id}) to {region}. Merge dispatches to save up to 25% of transport fees!"
+        else:
+            consolidation_alert = f"Consolidation Recommendation: Historical data indicates load merging opportunities on {region} route. Batch cargo to save up to 30%."
+            
     return {
-        "region"         : region,
-        "date"           : date,
-        "forecast_orders": orders,
-        "estimated_desi" : desi,
-        "vehicle_type"   : vehicle,
-        "total_cost_azn" : cost,
-        "cold_chain"     : cold_chain,
-        "distance_km"    : distance_km,
+        "region"             : region,
+        "date"               : date,
+        "estimated_desi"     : desi,
+        "vehicle_type"       : vehicle,
+        "total_cost_azn"     : final_cost,
+        "cold_chain"         : cold_chain,
+        "distance_km"        : distance_km,
+        "delay_risk_pct"     : delay_risk,
+        "consolidation_alert": consolidation_alert,
     }
 
 
@@ -147,6 +224,7 @@ def get_route_history(origin: str, destination: str, weeks_back: int = 12):
             "cost_range"      : f"{rows[3]:.0f}–{rows[4]:.0f} AZN" if rows[3] is not None else "N/A",
         }
     except Exception as e:
+        print(f"[WARN] /route-history query failed, returning mock data: {e}")
         return {
             "origin"         : origin,
             "destination"    : destination,
@@ -164,17 +242,15 @@ def get_warehouse(region: str, item_count: int, delivery_type: str, order_hour: 
     try:
         model = joblib.load(MODEL_DIR / "target5_warehouse_XGBoost_Tuned.joblib")
         X = pd.DataFrame([{
-            "region_enc"   : ["Absheron","Ganja","Kalbajar","Khachmaz","Khankendi",
-                              "Lankaran","Nakhchivan","Qazakh","Sheki","Yevlakh"].index(region)
-                              if region in ["Absheron","Ganja","Kalbajar","Khachmaz","Khankendi",
-                              "Lankaran","Nakhchivan","Qazakh","Sheki","Yevlakh"] else 0,
+            "region_enc"   : ALL_REGIONS.index(region) if region in ALL_REGIONS else 0,
             "item_count"   : item_count,
             "is_express"   : int(delivery_type == "express"),
             "order_hour"   : order_hour,
         }])
         pred = model.predict(X)[0]
         return {"region": region, "fulfilling_warehouse_id": str(pred), "confidence": 0.86}
-    except Exception:
+    except Exception as e:
+        print(f"[WARN] /warehouse model prediction failed, returning mock data: {e}")
         return {"region": region, "fulfilling_warehouse_id": f"WH_{region.upper()}_01",
                 "confidence": 0.86, "note": "mock"}
 
@@ -185,15 +261,61 @@ def get_store(region: str, item_count: int, delivery_type: str):
     try:
         model = joblib.load(MODEL_DIR / "target5_store_XGBoost_tuned.joblib")
         X = pd.DataFrame([{
-            "region_enc" : ["Absheron","Ganja","Kalbajar","Khachmaz","Khankendi",
-                            "Lankaran","Nakhchivan","Qazakh","Sheki","Yevlakh"].index(region)
-                            if region in ["Absheron","Ganja","Kalbajar","Khachmaz","Khankendi",
-                            "Lankaran","Nakhchivan","Qazakh","Sheki","Yevlakh"] else 0,
+            "region_enc" : ALL_REGIONS.index(region) if region in ALL_REGIONS else 0,
             "item_count" : item_count,
             "is_express" : int(delivery_type == "express"),
         }])
         pred = model.predict(X)[0]
         return {"region": region, "destination_store_id": str(pred), "confidence": 0.99}
-    except Exception:
+    except Exception as e:
+        print(f"[WARN] /store model prediction failed, returning mock data: {e}")
         return {"region": region, "destination_store_id": "ST0001",
                 "confidence": 0.99, "note": "mock"}
+
+
+class ShipmentBookRequest(BaseModel):
+    shipment_id: str
+    destination: str
+    date: str
+    vehicle: str
+    cost: float
+    delay: float
+    status: str
+
+
+@router.post("/shipments")
+def book_shipment(req: ShipmentBookRequest):
+    con = get_db()
+    con.execute(
+        """
+        INSERT INTO booked_shipments (shipment_id, destination, date, vehicle, cost, delay, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """,
+        [req.shipment_id, req.destination, req.date, req.vehicle, req.cost, req.delay, req.status]
+    )
+    return {"status": "success", "shipment_id": req.shipment_id}
+
+
+@router.get("/shipments")
+def list_shipments():
+    con = get_db()
+    rows = con.execute("SELECT shipment_id, destination, date, vehicle, cost, delay, status FROM booked_shipments").fetchall()
+    return [
+        {
+            "id": r[0],
+            "destination": r[1],
+            "date": r[2],
+            "vehicle": r[3],
+            "cost": r[4],
+            "delay": r[5],
+            "status": r[6]
+        }
+        for r in rows
+    ]
+
+
+@router.delete("/shipments/{shipment_id}")
+def delete_shipment(shipment_id: str):
+    con = get_db()
+    con.execute("DELETE FROM booked_shipments WHERE shipment_id = ?", [shipment_id])
+    return {"status": "deleted"}

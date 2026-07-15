@@ -3,16 +3,8 @@ from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-
-if not SECRET_KEY:
-    raise RuntimeError("SECRET_KEY is not set")
-
+SECRET_KEY = "artilogix-demo-secret-key-2026"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -24,6 +16,10 @@ DEMO_USERS = {
     "logistics@demo.az": {
         "password": "logistics123",
         "role": "logistics"
+    },
+    "admin@demo.az": {
+        "password": "admin123",
+        "role": "admin"
     }
 }
 
@@ -37,7 +33,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def verify_token(token: str = Depends(oauth2_scheme)):
+def decode_token(token: str) -> dict:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
@@ -49,6 +45,17 @@ def verify_token(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Invalid token")
+
+
+def verify_token(token: str = Depends(oauth2_scheme)):
+    return decode_token(token)
+
+
+def verify_token_query(token: str):
+    """Same as verify_token, but reads the JWT from a query param instead
+    of the Authorization header. Needed for EventSource (SSE) connections,
+    since the browser's native EventSource API cannot send custom headers."""
+    return decode_token(token)
 
 
 def require_role(required_role: str):
