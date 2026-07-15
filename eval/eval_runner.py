@@ -2,60 +2,80 @@ import sys
 import json
 import time
 import requests
+import os
 from datetime import datetime
 from pathlib import Path
+from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-OLLAMA_URL   = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "qwen2.5:latest"
+load_dotenv()
+
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 QUERIES_FILE = "eval/eval_queries.json"
 REPORT_FILE  = "eval/llm_eval_report.md"
 
 # ── MOCK MODE ─────────────────────────────────────────────────────────────────
-# True  → FastAPI çağırışı yoxdur, yalnız Ollama tool seçimi yoxlanılır
+# True  → FastAPI çağırışı yoxdur, yalnız Gemini tool seçimi yoxlanılır
 # False → FastAPI işləyir, tam end-to-end test
 MOCK_FASTAPI = False
 
-from app.llm.tools import (
-    TOOLS, TOOL_ENDPOINT_MAP,
-    parse_tool_call, build_tool_prompt_suffix, supports_native_tools
-)
+from google import genai
+from google.genai import types
+from app.llm.tools import TOOL_ENDPOINT_MAP, POST_TOOLS, build_gemini_tools
 
-NATIVE = supports_native_tools(OLLAMA_MODEL)
+client = genai.Client()
 
 MARKETPLACE_PROMPT = Path("app/llm/system_prompts/marketplace.txt").read_text(encoding="utf-8")
 LOGISTICS_PROMPT   = Path("app/llm/system_prompts/logistics.txt").read_text(encoding="utf-8")
 
 
 def _system_prompt(portal: str) -> str:
-    base = MARKETPLACE_PROMPT if portal == "marketplace" else LOGISTICS_PROMPT
-    if not NATIVE:
-        base += build_tool_prompt_suffix()
-    return base
+    return MARKETPLACE_PROMPT if portal == "marketplace" else LOGISTICS_PROMPT
 
 
-def _call_ollama(portal: str, question: str) -> tuple[dict, float]:
-    payload = {
-        "model"   : OLLAMA_MODEL,
-        "messages": [
-            {"role": "system", "content": _system_prompt(portal)},
-            {"role": "user",   "content": question},
-        ],
-        "stream"  : False,
-        "options" : {"temperature": 0.1},
-    }
-    if NATIVE:
-        payload["tools"] = TOOLS
-
-    t0       = time.time()
-    response = requests.post(OLLAMA_URL, json=payload, timeout=60)
-    response.raise_for_status()
-    latency  = round(time.time() - t0, 2)
-    return response.json(), latency
+def _first_function_call_part(response) -> types.Part | None:
+    if not response.candidates or not response.candidates[0].content:
+        return None
+    for part in response.candidates[0].content.parts or []:
+        if part.function_call is not None:
+            return part
+    return None
 
 
-POST_TOOLS = {"get_dispatch_plan", "get_scenario"}
+def _call_gemini(portal: str, question: str) -> tuple[types.GenerateContentResponse, float]:
+    system_prompt = _system_prompt(portal)
+    config = types.GenerateContentConfig(
+        system_instruction=system_prompt,
+        tools=build_gemini_tools(),
+        temperature=0.1,
+        automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+    )
+    max_retries = 5
+    backoff = 2
+    for attempt in range(max_retries):
+        try:
+            t0 = time.time()
+            response = client.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=question,
+                config=config,
+            )
+            latency = round(time.time() - t0, 2)
+            return response, latency
+        except Exception as e:
+            err_str = str(e)
+            is_transient = any(
+                term in err_str.upper()
+                for term in ["429", "503", "RESOURCE_EXHAUSTED", "UNAVAILABLE", "OVERLOADED"]
+            )
+            if is_transient:
+                if attempt < max_retries - 1:
+                    sleep_time = backoff ** attempt + 2
+                    print(f"         [API ERROR] Got transient error, sleeping {sleep_time}s before retry (attempt {attempt+1}/{max_retries})... Error: {err_str[:60]}")
+                    time.sleep(sleep_time)
+                    continue
+            raise e
 
 
 def _call_fastapi(tool_name: str, arguments: dict) -> dict:
@@ -75,33 +95,26 @@ def _call_fastapi(tool_name: str, arguments: dict) -> dict:
         return {"error": str(e)}
 
 
-def _extract_tool_call(response: dict) -> str | None:
-    msg        = response.get("message", {})
-    tool_calls = msg.get("tool_calls")
-    if tool_calls:
-        return tool_calls[0]["function"]["name"]
-    parsed = parse_tool_call(msg.get("content", ""))
-    if parsed:
-        return parsed["tool"]
+def _extract_tool_call(response: types.GenerateContentResponse) -> str | None:
+    fc_part = _first_function_call_part(response)
+    if fc_part:
+        return fc_part.function_call.name
     return None
 
 
-def _extract_tool_call_args(response: dict) -> dict:
-    msg        = response.get("message", {})
-    tool_calls = msg.get("tool_calls")
-    if tool_calls:
-        return tool_calls[0]["function"].get("arguments", {})
-    parsed = parse_tool_call(msg.get("content", ""))
-    if parsed:
-        return parsed.get("arguments", {})
+def _extract_tool_call_args(response: types.GenerateContentResponse) -> dict:
+    fc_part = _first_function_call_part(response)
+    if fc_part:
+        fc = fc_part.function_call
+        return dict(fc.args) if fc.args else {}
     return {}
 
 
-def _extract_answer_text(response: dict) -> str:
-    msg = response.get("message", {})
-    if msg.get("tool_calls"):
+def _extract_answer_text(response: types.GenerateContentResponse) -> str:
+    fc_part = _first_function_call_part(response)
+    if fc_part:
         return ""
-    return msg.get("content", "")
+    return response.text or ""
 
 
 def _check_fields(answer_text: str, expected_fields: list[str]) -> dict:
@@ -134,7 +147,7 @@ def evaluate_query(query: dict) -> dict:
     exp_behavior = query.get("expected_behavior")
 
     try:
-        response, latency = _call_ollama(portal, question)
+        response, latency = _call_gemini(portal, question)
     except Exception as e:
         return {
             "id": query["id"], "portal": portal, "question": question,
@@ -199,7 +212,7 @@ def run_eval(queries_file: str = QUERIES_FILE) -> list[dict]:
     results = []
 
     mode = "MOCK (tool selection only)" if MOCK_FASTAPI else "FULL (end-to-end)"
-    print(f"Running {len(queries)} queries | model={OLLAMA_MODEL} | mode={mode}")
+    print(f"Running {len(queries)} queries | model={GEMINI_MODEL} | mode={mode}")
     print()
 
     for i, query in enumerate(queries, 1):
@@ -207,8 +220,9 @@ def run_eval(queries_file: str = QUERIES_FILE) -> list[dict]:
         result = evaluate_query(query)
         status = "PASS" if result["pass"] else "FAIL"
         err_str = f" | ERR: {result['error'][:60]}" if result["error"] else ""
-        print(f"         → {status} | tool={result['actual_tool']} | latency={result['latency_s']}s{err_str}")
+        print(f"         -> {status} | tool={result['actual_tool']} | latency={result['latency_s']}s{err_str}")
         results.append(result)
+        time.sleep(4.5)
 
     return results
 
@@ -234,7 +248,7 @@ def _generate_report(results: list[dict]) -> str:
     lines = [
         "# ArtiLogix — LLM Evaluation Report (V-02/V-03)",
         f"Generated : {datetime.now().strftime('%Y-%m-%d %H:%M')}",
-        f"Model     : `{OLLAMA_MODEL}`",
+        f"Model     : `{GEMINI_MODEL}`",
         f"Mode      : {'MOCK — tool selection only' if MOCK_FASTAPI else 'FULL end-to-end'}",
         "",
         "---", "",
