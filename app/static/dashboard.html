@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtiLogix - Logistics Intel Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Dashboard Page Specific Styling */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-title-container h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+        }
+
+        .header-title-container p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Sparkline small canvas */
+        .sparkline {
+            width: 100px;
+            height: 36px;
+            margin-left: auto;
+        }
+
+        .kpi-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-box {
+            height: 320px;
+            position: relative;
+        }
+
+        /* Slide-over AI Panel */
+        .ai-slide-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            bottom: 0;
+            width: 420px;
+            background: rgba(17, 17, 19, 0.85);
+            border-left: 1px solid var(--border);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            transition: right var(--transition-slow) cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ai-slide-panel.open {
+            right: 0;
+        }
+
+        .ai-panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-panel-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .ai-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .ai-close-btn:hover {
+            color: var(--text-main);
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            line-height: 1.45;
+            animation: fade-in 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .chat-msg.user {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-msg.assistant {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid var(--border);
+        }
+
+        .chat-msg-thinking {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+        }
+
+        .thinking-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            animation: thinking-bounce 1s infinite alternate;
+        }
+
+        .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes thinking-bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-4px); }
+        }
+
+        .ai-panel-input-container {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .ai-suggested-prompts {
+            padding: 12px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background-color: rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border);
+        }
+
+        .suggested-prompt-btn {
+            background-color: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .suggested-prompt-btn:hover {
+            color: var(--text-main);
+            border-color: var(--primary);
+            background-color: var(--primary-glow);
+        }
+
+        /* Markdown tables in chat */
+        .chat-msg table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+
+        .chat-msg th, .chat-msg td {
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .chat-msg th {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        .chat-msg pre {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
+
+        /* Backdrop filter overlay when AI slides in */
+        .ai-backdrop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-normal);
+        }
+
+        .ai-backdrop-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 1100px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="margin-bottom: 40px; padding-left: 16px;">
+                <div class="logo-text" style="font-size: 22px; font-weight: 700; letter-spacing: -1px; background: none; -webkit-text-fill-color: var(--text-main); color: var(--text-main);">ArtiLogix</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" id="side-nav-overview">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="nav-item" id="side-nav-drivers">
+                    <i data-lucide="users"></i>
+                    <span>Drivers List</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer" style="margin-top: auto; padding: 0 8px;">
+                <div class="user-profile" style="display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--border); width: 100%;">
+                    <div class="avatar" id="user-avatar" style="flex-shrink: 0;">L</div>
+                    <div class="user-info" style="flex: 1; min-width: 0;">
+                        <span class="user-name" id="user-display-name" style="display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Logistics Demo</span>
+                        <span class="user-role" style="font-size: 11px; color: var(--text-muted);">Manager</span>
+                    </div>
+                    <button class="btn btn-ghost" onclick="logout()" style="padding: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px;" title="Logout">
+                        <i data-lucide="log-out" style="width: 18px; height: 18px; color: var(--danger);"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Scrollable Dashboard Content -->
+        <main class="main-content">
+            <div id="view-overview" class="sub-view">
+                <header class="dashboard-header animated-fade-in">
+                <div class="header-title-container">
+                    <h1 class="logo-text" style="-webkit-text-fill-color: initial; background: none; font-size: 26px;">Logistics Intelligence</h1>
+                    <p>Real-time vehicle dispatches, what-if scenarios & demand forecasts</p>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-switch-btn btn btn-secondary" id="theme-toggle" title="Toggle Theme" style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0;">
+                        <i data-lucide="sun"></i>
+                    </button>
+                    <button class="btn btn-primary" id="refresh-dashboard">
+                        <i data-lucide="refresh-cw"></i>
+                        <span>Sync Network</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- KPI Summary Row -->
+            <section class="kpi-container animated-fade-in" style="animation-delay: 100ms;">
+                <!-- KPI 1 -->
+                <div class="card">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                        <span class="form-label">Total Weekly Load</span>
+                        <canvas class="sparkline" id="sparkline-load"></canvas>
+                    </div>
+                    <div class="kpi-value" id="kpi-load-val">4,820</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend up"><i data-lucide="trending-up"></i> +12.4%</span>
+                        <span class="form-label" style="font-size: 11px;">vs last week</span>
+                    </div>
+                </div>
+
+                <!-- KPI 2 -->
+                <div class="card">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                        <span class="form-label">Active Routes</span>
+                        <canvas class="sparkline" id="sparkline-routes"></canvas>
+                    </div>
+                    <div class="kpi-value" id="kpi-routes-val">8</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend up"><i data-lucide="trending-up"></i> +1 route</span>
+                        <span class="form-label" style="font-size: 11px;">active dispatches</span>
+                    </div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="card">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                        <span class="form-label">Avg Delay Rate</span>
+                        <canvas class="sparkline" id="sparkline-delays"></canvas>
+                    </div>
+                    <div class="kpi-value" id="kpi-delays-val">4.2%</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend down"><i data-lucide="trending-down"></i> -1.8%</span>
+                        <span class="form-label" style="font-size: 11px;">Caucasus standard</span>
+                    </div>
+                </div>
+
+                <!-- KPI 4 -->
+                <div class="card">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                        <span class="form-label">Cost Projection</span>
+                        <canvas class="sparkline" id="sparkline-cost"></canvas>
+                    </div>
+                    <div class="kpi-value" id="kpi-cost-val">12,850 ₼</div>
+                    <div class="kpi-footer">
+                        <span class="kpi-trend up"><i data-lucide="trending-up"></i> +8.1%</span>
+                        <span class="form-label" style="font-size: 11px;">estimated budget</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Charts widgets -->
+            <section class="charts-grid animated-fade-in" style="animation-delay: 300ms;">
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 16px;">Regional Demand Trend</h3>
+                    <div class="chart-box">
+                        <canvas id="chart-demand"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 16px;">Route Delay Rates (%)</h3>
+                    <div class="chart-box">
+                        <canvas id="chart-delays"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 16px;">Vehicle Usage Distribution</h3>
+                    <div class="chart-box">
+                        <canvas id="chart-usage"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 16px;">Top Routes by Cost</h3>
+                    <div class="chart-box">
+                        <canvas id="chart-routes"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Drivers List Panel Tab View -->
+        <div id="view-drivers" class="sub-view" style="display: none;">
+            <!-- Header matching dashboard design -->
+            <header class="dashboard-header animated-fade-in">
+                <div class="header-title-container">
+                    <h1 class="logo-text" style="-webkit-text-fill-color: initial; background: none; font-size: 26px;">Driver Management</h1>
+                    <p>Register transport operators, manage vehicles, and check transit statuses</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="btn-open-register-driver">
+                        <i data-lucide="user-plus"></i>
+                        <span>Register Driver</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Search and Filter Bar -->
+            <section class="card animated-fade-in" style="padding: 16px; margin-bottom: 0;">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div style="position: relative; flex: 1;">
+                        <input type="text" id="driver-search-input" class="form-control" placeholder="Search by name, phone, or vehicle ID..." style="padding-left: 40px; width: 100%;">
+                        <i data-lucide="search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted);"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Drivers Grid Table -->
+            <section class="card animated-fade-in" style="padding: 0; overflow: hidden; margin-top: 16px;">
+                <div class="table-responsive">
+                    <table class="data-table" id="drivers-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border); text-align: left;">
+                                <th style="padding: 16px; font-weight: 600; font-size: 12px; color: var(--text-muted); text-transform: uppercase; width: 120px;">Driver ID</th>
+                                <th style="padding: 16px; font-weight: 600; font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Operator Name</th>
+                                <th style="padding: 16px; font-weight: 600; font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Phone Contact</th>
+                                <th style="padding: 16px; font-weight: 600; font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Vehicle Model</th>
+                                <th style="padding: 16px; font-weight: 600; font-size: 12px; color: var(--text-muted); text-transform: uppercase; width: 150px;">License Plate</th>
+                                <th style="padding: 16px; font-weight: 600; font-size: 12px; color: var(--text-muted); text-transform: uppercase; width: 120px;">Status</th>
+                                <th style="padding: 16px; font-weight: 600; font-size: 12px; color: var(--text-muted); text-transform: uppercase; width: 140px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drivers-table-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+    </div>
+
+    <!-- AI SLIDE-OVER PANEL -->
+    <div class="ai-backdrop-overlay" id="ai-overlay"></div>
+    <div class="ai-slide-panel" id="ai-panel">
+        <div class="ai-panel-header">
+            <div class="ai-panel-title">
+                <i data-lucide="bot" style="color: var(--primary);"></i>
+                <span>ArtiLogix AI Logistics Advisor</span>
+            </div>
+            <button class="ai-close-btn" id="ai-panel-close">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <!-- Chat history messages -->
+        <div class="ai-chat-messages" id="ai-messages">
+            <div class="chat-msg assistant">
+                Salam! I am the ArtiLogix AI Assistant. I can forecast cargo demand, suggest dispatches, run what-if simulations, or analyze route delays. Ask me anything about regional dispatches!
+            </div>
+        </div>
+
+        <!-- Suggested quick prompts -->
+        <div class="ai-suggested-prompts">
+            <button class="suggested-prompt-btn" data-prompt="Show weekly forecast for Ganja">Ganja Forecast</button>
+            <button class="suggested-prompt-btn" data-prompt="What vehicle should I send to Lankaran?">Lankaran Dispatch</button>
+            <button class="suggested-prompt-btn" data-prompt="What if demand in Sheki increases by 25%?">Sheki +25% Scenario</button>
+            <button class="suggested-prompt-btn" data-prompt="Show delay rate history for Baku to Ganja">Baku-Ganja delays</button>
+        </div>
+
+        <!-- Inputs container -->
+        <div class="ai-panel-input-container">
+            <input type="text" id="ai-chat-input" class="form-control" placeholder="Ask about logistics planning..." style="flex: 1;">
+            <button class="btn btn-primary" id="ai-chat-send" style="padding: 12px;">
+                <i data-lucide="send"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Bottom-Right Actions Container -->
+    <div class="floating-actions-container">
+        <button class="floating-btn chat-toggle-btn" id="chat-toggle" title="Open AI Assistant">
+            <i data-lucide="message-square"></i>
+        </button>
+    </div>
+
+    <!-- REGISTER DRIVER MODAL -->
+    <div class="ai-backdrop-overlay" id="driver-modal-overlay" style="display: none; z-index: 150; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);"></div>
+    <div class="card" id="register-driver-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 420px; z-index: 160; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); background: var(--bg-card);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--text-main);">Register New Driver</h3>
+            <button class="btn btn-ghost" id="btn-close-register-modal" style="padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 50%; min-height: 0; min-width: 0; background: transparent; border: none; cursor: pointer;">
+                <i data-lucide="x" style="width: 18px; height: 18px; color: var(--text-muted);"></i>
+            </button>
+        </div>
+        <form id="register-driver-form">
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label for="driver-name-input" class="form-label">Full Name</label>
+                <input type="text" id="driver-name-input" class="form-control" placeholder="Elnur Hasanov" required style="width: 100%;">
+            </div>
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label for="driver-phone-input" class="form-label">Phone Contact</label>
+                <input type="text" id="driver-phone-input" class="form-control" placeholder="+994 50 123 45 67" required style="width: 100%;">
+            </div>
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label for="driver-vehicle-input" class="form-label">Vehicle Type</label>
+                <input type="text" id="driver-vehicle-input" class="form-control" placeholder="Mercedes-Benz Actros (TIR)" required style="width: 100%;">
+            </div>
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label for="driver-plate-input" class="form-label">License Plate / Vehicle Number</label>
+                <input type="text" id="driver-plate-input" class="form-control" placeholder="99-XT-940" required style="width: 100%;">
+            </div>
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label for="driver-password-input" class="form-label">Driver Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="driver-password-input" class="form-control" placeholder="Min. 4 characters — the driver will use this with their generated ID to log in" required minlength="4" style="width: 100%;">
+                    <button type="button" id="driver-password-toggle" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center;">
+                        <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i data-lucide="user-plus"></i>
+                <span>Register & Generate ID</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Common App Script -->
+    <script src="js/app.js?v=1.1"></script>
+    <!-- Dashboard Specific controller script -->
+    <script src="js/dashboard.js?v=1.6"></script>
+</body>
+</html>
