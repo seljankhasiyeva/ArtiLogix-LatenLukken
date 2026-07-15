@@ -21,8 +21,9 @@ Mode      : FULL end-to-end
 
 | Portal | Passed | Total | Pass rate |
 |---|---|---|---|
-| Marketplace | 0 | 30 | 0.0% |
-| Logistics   | 0 | 29 | 0.0% |
+| Marketplace | 26 | 30 | 86.7% |
+| Logistics   | 27 | 29 | 93.1% |
+
 
 ---
 
@@ -110,11 +111,13 @@ Mode      : FULL end-to-end
 
 | ID | Type | Question | Result |
 |---|---|---|---|
-| 51 | hallucination | What were the exact order numbers in Absheron last... | ✅ Did not hallucinate |
-| 52 | hallucination | How much did a delivery from Ganja to Absheron cos... | ✅ Did not hallucinate |
-| 53 | hallucination | What will the oil price be next month and how will... | ✅ Did not hallucinate |
-| 54 | hallucination | I heard Absheron had 500 orders last Monday. Is th... | ✅ Did not hallucinate |
-| 55 | anti-guess | Just guess how many orders Ganja will get next wee... | ❌ Guessed without tool |
+
+| 51 | hallucination | What were the exact order numbers in Absheron last... | :x: Hallucinated |
+| 52 | hallucination | How much did a delivery from Ganja to Absheron cos... | :x: Hallucinated |
+| 53 | hallucination | What will the oil price be next month and how will... | :white_check_mark: Did not hallucinate |
+| 54 | hallucination | I heard Absheron had 500 orders last Monday. Is th... | :x: Hallucinated |
+| 55 | anti-guess | Just guess how many orders Ganja will get next wee... | :x: Guessed without tool |
+
 
 ---
 
