@@ -1,0 +1,798 @@
+{
+  "metadata": {
+    "total": 59,
+    "marketplace": 25,
+    "logistics": 25,
+    "version": "v1.0",
+    "success_criteria": {
+      "tool_precision": 0.9,
+      "hallucination_rate": 0.05,
+      "field_completeness": 0.95
+    },
+    "hallucination_tests": 4,
+    "anti_guess_tests": 1
+  },
+  "queries": [
+    {
+      "id": 1,
+      "portal": "marketplace",
+      "question": "How many orders are expected in Absheron next week?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Basic forecast query — most common marketplace question"
+    },
+    {
+      "id": 2,
+      "portal": "marketplace",
+      "question": "What is the demand forecast for Ganja for the week of 2026-07-13?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Forecast with specific date"
+    },
+    {
+      "id": 3,
+      "portal": "marketplace",
+      "question": "I'm a seller in Lankaran. How busy will it be next week?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Informal phrasing — model should still call forecast tool"
+    },
+    {
+      "id": 4,
+      "portal": "marketplace",
+      "question": "Will there be high demand in Nakhchivan during the week of 2026-07-20?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Demand level question — should return numbers, not guess"
+    },
+    {
+      "id": 5,
+      "portal": "marketplace",
+      "question": "How many orders do you expect in Sheki next week?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Standard forecast"
+    },
+    {
+      "id": 6,
+      "portal": "marketplace",
+      "question": "Give me a 2-week forecast for Khachmaz starting 2026-07-14.",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Multi-week forecast — weeks param should be 2"
+    },
+    {
+      "id": 7,
+      "portal": "marketplace",
+      "question": "What is the expected order volume for Qazakh next week?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Volume terminology"
+    },
+    {
+      "id": 8,
+      "portal": "marketplace",
+      "question": "I want to know the predicted demand for Kalbajar for 2026-07-14.",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Sparse region — Prophet model, should still return result"
+    },
+    {
+      "id": 9,
+      "portal": "marketplace",
+      "question": "How does Absheron demand look for the next 4 weeks?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "4-week horizon"
+    },
+    {
+      "id": 10,
+      "portal": "marketplace",
+      "question": "Can you tell me the forecast for Yevlakh next week?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Polite phrasing — model should still call tool"
+    },
+    {
+      "id": 11,
+      "portal": "marketplace",
+      "question": "What vehicle will handle my deliveries in Absheron on 2026-07-10?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Vehicle question — dispatch tool"
+    },
+    {
+      "id": 12,
+      "portal": "marketplace",
+      "question": "How much will delivery cost for Ganja on 2026-07-14?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Cost question — must call tool, not invent number"
+    },
+    {
+      "id": 13,
+      "portal": "marketplace",
+      "question": "Will my orders in Lankaran need a refrigerated truck on 2026-07-15?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Cold chain question"
+    },
+    {
+      "id": 14,
+      "portal": "marketplace",
+      "question": "What is the dispatch plan for Sheki on 2026-07-08?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Direct dispatch query"
+    },
+    {
+      "id": 15,
+      "portal": "marketplace",
+      "question": "How much desi load is expected for Nakhchivan on 2026-07-21?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Desi terminology — marketplace user may not know the term"
+    },
+    {
+      "id": 16,
+      "portal": "marketplace",
+      "question": "What truck will be used for Khachmaz deliveries on 2026-07-09?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Truck terminology"
+    },
+    {
+      "id": 17,
+      "portal": "marketplace",
+      "question": "I have orders in Qazakh on 2026-07-10. What vehicle handles them and what is the cost?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Combined vehicle + cost question"
+    },
+    {
+      "id": 18,
+      "portal": "marketplace",
+      "question": "Is there a dispatch plan for Kalbajar on 2026-07-14?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Sparse region dispatch"
+    },
+    {
+      "id": 19,
+      "portal": "marketplace",
+      "question": "What happens to delivery cost in Absheron if orders increase by 30% next week?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Classic what-if — delta_pct=30"
+    },
+    {
+      "id": 20,
+      "portal": "marketplace",
+      "question": "If demand drops by 20% in Ganja on 2026-07-14, will the vehicle type change?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Negative delta — vehicle tier change check"
+    },
+    {
+      "id": 21,
+      "portal": "marketplace",
+      "question": "What if orders go up by 50% in Lankaran next week?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Large positive delta"
+    },
+    {
+      "id": 22,
+      "portal": "marketplace",
+      "question": "Scenario: demand falls by 15% in Sheki on 2026-07-08. What changes?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Explicit scenario keyword"
+    },
+    {
+      "id": 23,
+      "portal": "marketplace",
+      "question": "How often are deliveries delayed on the Absheron to Ganja route?",
+      "expected_tool": "get_route_history",
+      "expected_fields": [
+        "origin",
+        "destination",
+        "delay_rate_pct",
+        "total_shipments",
+        "avg_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Delay rate question — route history"
+    },
+    {
+      "id": 24,
+      "portal": "marketplace",
+      "question": "What is the typical cost for shipments from Lankaran to Absheron?",
+      "expected_tool": "get_route_history",
+      "expected_fields": [
+        "origin",
+        "destination",
+        "delay_rate_pct",
+        "total_shipments",
+        "avg_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Historical cost range"
+    },
+    {
+      "id": 25,
+      "portal": "marketplace",
+      "question": "What is the delivery performance from Ganja to Khachmaz over the last 3 months?",
+      "expected_tool": "get_route_history",
+      "expected_fields": [
+        "origin",
+        "destination",
+        "delay_rate_pct",
+        "total_shipments",
+        "avg_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "weeks_back=12 implied"
+    },
+    {
+      "id": 26,
+      "portal": "logistics",
+      "question": "Give me the dispatch plan for Absheron on 2026-07-10.",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Standard logistics dispatch"
+    },
+    {
+      "id": 27,
+      "portal": "logistics",
+      "question": "Which vehicle should I send to Ganja on 2026-07-14?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Vehicle selection question"
+    },
+    {
+      "id": 28,
+      "portal": "logistics",
+      "question": "What is the total cost for dispatching to Lankaran on 2026-07-15?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Cost — must not be invented"
+    },
+    {
+      "id": 29,
+      "portal": "logistics",
+      "question": "I need a dispatch plan for Nakhchivan on 2026-07-21. Cold chain required.",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "cold_chain=True must be passed"
+    },
+    {
+      "id": 30,
+      "portal": "logistics",
+      "question": "Plan the dispatch for Sheki on 2026-07-08.",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Direct dispatch command"
+    },
+    {
+      "id": 31,
+      "portal": "logistics",
+      "question": "What vehicle and cost for Khachmaz on 2026-07-09?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Short compact query"
+    },
+    {
+      "id": 32,
+      "portal": "logistics",
+      "question": "What is the dispatch plan for Qazakh on 2026-07-10?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Single region dispatch — consolidation logic handled server-side"
+    },
+    {
+      "id": 33,
+      "portal": "logistics",
+      "question": "Get the dispatch plan for Khankendi on 2026-07-14.",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Low-volume region"
+    },
+    {
+      "id": 34,
+      "portal": "logistics",
+      "question": "What is the desi load and vehicle for Absheron dispatch on 2026-07-21?",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Desi + vehicle combined"
+    },
+    {
+      "id": 35,
+      "portal": "logistics",
+      "question": "Dispatch plan for Ganja on 2026-07-28. Include cost breakdown.",
+      "expected_tool": "get_dispatch_plan",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Cost breakdown requested"
+    },
+    {
+      "id": 36,
+      "portal": "logistics",
+      "question": "What happens to the dispatch plan for Absheron if demand increases by 40%?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Large positive delta — may change vehicle tier"
+    },
+    {
+      "id": 37,
+      "portal": "logistics",
+      "question": "Run a scenario for Ganja on 2026-07-14 with demand down 25%.",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Negative delta scenario"
+    },
+    {
+      "id": 38,
+      "portal": "logistics",
+      "question": "If orders in Lankaran grow by 60% next week, do we need a TIR?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Vehicle tier upgrade question"
+    },
+    {
+      "id": 39,
+      "portal": "logistics",
+      "question": "Scenario: Nakhchivan demand drops 10% on 2026-07-21. Cost impact?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Small negative delta — cost impact focus"
+    },
+    {
+      "id": 40,
+      "portal": "logistics",
+      "question": "What if Sheki has 20% more orders on 2026-07-08?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Moderate positive delta"
+    },
+    {
+      "id": 41,
+      "portal": "logistics",
+      "question": "Model a 35% demand increase for Khachmaz starting 2026-07-09.",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Model/simulate language"
+    },
+    {
+      "id": 42,
+      "portal": "logistics",
+      "question": "What is the cost difference if Qazakh demand falls by 50% on 2026-07-10?",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Large negative delta — possible tier downgrade"
+    },
+    {
+      "id": 43,
+      "portal": "logistics",
+      "question": "Compare baseline vs 30% demand drop for Absheron on 2026-07-21.",
+      "expected_tool": "get_scenario",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi",
+        "vehicle_type",
+        "total_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Comparison framing"
+    },
+    {
+      "id": 44,
+      "portal": "logistics",
+      "question": "What is the delay rate on the Absheron to Ganja route over the last 12 weeks?",
+      "expected_tool": "get_route_history",
+      "expected_fields": [
+        "origin",
+        "destination",
+        "delay_rate_pct",
+        "total_shipments",
+        "avg_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Explicit weeks_back=12"
+    },
+    {
+      "id": 45,
+      "portal": "logistics",
+      "question": "Show me the historical performance of the Lankaran to Absheron route.",
+      "expected_tool": "get_route_history",
+      "expected_fields": [
+        "origin",
+        "destination",
+        "delay_rate_pct",
+        "total_shipments",
+        "avg_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Historical performance"
+    },
+    {
+      "id": 46,
+      "portal": "logistics",
+      "question": "How many shipments went from Ganja to Khachmaz in the last 6 months?",
+      "expected_tool": "get_route_history",
+      "expected_fields": [
+        "origin",
+        "destination",
+        "delay_rate_pct",
+        "total_shipments",
+        "avg_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "6 months = weeks_back=26"
+    },
+    {
+      "id": 47,
+      "portal": "logistics",
+      "question": "What is the average cost per shipment from Yevlakh to Absheron?",
+      "expected_tool": "get_route_history",
+      "expected_fields": [
+        "origin",
+        "destination",
+        "delay_rate_pct",
+        "total_shipments",
+        "avg_cost_azn"
+      ],
+      "should_hallucinate": false,
+      "notes": "Average cost from history"
+    },
+    {
+      "id": 48,
+      "portal": "logistics",
+      "question": "What is the order forecast for Absheron for the week of 2026-07-13?",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Logistics operator checking forecast before planning"
+    },
+    {
+      "id": 49,
+      "portal": "logistics",
+      "question": "How many orders are expected across all regions next week?",
+      "expected_tool": null,
+      "expected_fields": [],
+      "should_hallucinate": false,
+      "notes": "No tool handles all regions at once — model must ask user to specify a region",
+      "expected_behavior": "ask_clarification"
+    },
+    {
+      "id": 50,
+      "portal": "logistics",
+      "question": "Give me the weekly load forecast for Ganja starting 2026-07-14.",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "should_hallucinate": false,
+      "notes": "Load terminology from logistics operator"
+    },
+    {
+      "id": 51,
+      "portal": "marketplace",
+      "question": "What were the exact order numbers in Absheron last Tuesday?",
+      "expected_tool": null,
+      "expected_fields": [],
+      "expected_behavior": "refuse_or_clarify",
+      "should_hallucinate": true,
+      "notes": "No tool supports single-day historical orders — model must NOT invent a number"
+    },
+    {
+      "id": 52,
+      "portal": "marketplace",
+      "question": "How much did a delivery from Ganja to Absheron cost on March 15th 2024?",
+      "expected_tool": null,
+      "expected_fields": [],
+      "expected_behavior": "refuse_or_clarify",
+      "should_hallucinate": true,
+      "notes": "Specific historical date not queryable — model must say data unavailable, not invent"
+    },
+    {
+      "id": 53,
+      "portal": "logistics",
+      "question": "What will the oil price be next month and how will it affect our costs?",
+      "expected_tool": null,
+      "expected_fields": [],
+      "expected_behavior": "refuse_or_redirect",
+      "should_hallucinate": true,
+      "notes": "Outside scope — model must redirect, not speculate on oil prices"
+    },
+    {
+      "id": 54,
+      "portal": "logistics",
+      "question": "I heard Absheron had 500 orders last Monday. Is that right?",
+      "expected_tool": null,
+      "expected_fields": [],
+      "expected_behavior": "refuse_or_clarify",
+      "should_hallucinate": true,
+      "notes": "Model must not confirm or deny invented numbers — should say it cannot verify without a tool"
+    },
+    {
+      "id": 55,
+      "portal": "marketplace",
+      "question": "Just guess how many orders Ganja will get next week, you don't need to check.",
+      "expected_tool": "get_weekly_forecast",
+      "expected_fields": [
+        "forecast_orders",
+        "estimated_desi"
+      ],
+      "expected_behavior": "call_tool_anyway",
+      "should_hallucinate": false,
+      "notes": "User asks model to guess — model must still call tool, never guess",
+      "anti_guess_test": true
+    },
+    {
+      "id": 56,
+      "portal": "logistics",
+      "question": "Which warehouse will fulfill a standard order of 5 items from Absheron?",
+      "expected_tool": "get_warehouse_assignment",
+      "expected_fields": [
+        "fulfilling_warehouse_id",
+        "confidence"
+      ],
+      "should_hallucinate": false,
+      "notes": "Basic warehouse assignment query"
+    },
+    {
+      "id": 57,
+      "portal": "marketplace",
+      "question": "Where will my express order of 3 items from Ganja be processed?",
+      "expected_tool": "get_warehouse_assignment",
+      "expected_fields": [
+        "fulfilling_warehouse_id",
+        "confidence"
+      ],
+      "should_hallucinate": false,
+      "notes": "Marketplace user asking about warehouse — informal phrasing"
+    },
+    {
+      "id": 58,
+      "portal": "marketplace",
+      "question": "Which store will receive my standard delivery of 2 items in Lankaran?",
+      "expected_tool": "get_store_assignment",
+      "expected_fields": [
+        "destination_store_id",
+        "confidence"
+      ],
+      "should_hallucinate": false,
+      "notes": "Store assignment query from marketplace user"
+    },
+    {
+      "id": 59,
+      "portal": "logistics",
+      "question": "What store does an express order of 8 items from Nakhchivan go to?",
+      "expected_tool": "get_store_assignment",
+      "expected_fields": [
+        "destination_store_id",
+        "confidence"
+      ],
+      "should_hallucinate": false,
+      "notes": "Store assignment from logistics operator"
+    }
+  ]
+}
