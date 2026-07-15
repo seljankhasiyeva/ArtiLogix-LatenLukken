@@ -1,0 +1,28 @@
+# Secrets — never bake these into the image; docker-compose passes them
+# in via environment variables read from .env at build/run time instead.
+.env
+.env.*
+!.env.example
+
+# Version control
+.git
+.gitignore
+
+# Local dev environments
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Not needed inside the container
+notebooks/
+docs/
+tests/
+scratch/
+eval/
+*.ipynb
+
+# OS/editor junk
+.DS_Store
+.vscode/
+.idea/

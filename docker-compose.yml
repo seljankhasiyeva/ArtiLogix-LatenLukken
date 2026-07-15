@@ -8,18 +8,9 @@ services:
       - ./data:/app/data
       - ./models:/app/models
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash}
       - JWT_SECRET=${JWT_SECRET}
-    restart: unless-stopped
-
-  nginx:
-    image: nginx:alpine
-    container_name: artilogix-nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./app/static:/usr/share/nginx/html
-    depends_on:
-      - artilogix-api
+      - JWT_ALGORITHM=${JWT_ALGORITHM:-HS256}
+      - DB_PATH=${DB_PATH:-data/artilogix.duckdb}
     restart: unless-stopped
